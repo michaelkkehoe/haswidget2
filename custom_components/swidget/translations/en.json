@@ -25,7 +25,7 @@
                 "data": {
                     "host": "Host",
                     "password": "Password"
-                },
+                }
                 "description": "If you leave the host empty, discovery will be used to find devices."
             }
         }

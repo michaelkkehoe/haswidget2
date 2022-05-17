@@ -77,7 +77,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             discovery_info.ip, discovery_info.macaddress
         )
 
-     async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
+    async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
         """Handle any discovery."""
         await self.async_set_unique_id(dr.format_mac(mac))
         self._abort_if_unique_id_configured(updates={CONF_HOST: host})

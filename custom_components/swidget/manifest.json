@@ -1,0 +1,27 @@
+{
+    "domain": "swidget",
+    "name": "Swidget",
+    "config_flow": true,
+    "documentation": "https://github.com/michaelkkehoe/ha-swidget",
+    "issue_tracker": "https://github.com/michaelkkehoe/ha-swidgetissues",
+    "dependencies": ["network"],
+    "codeowners": ["@michaelkkehoe"],
+    "requirements": ["pyswidget @ git+https://github.com/michaelkkehoe/pyswidget.git"],
+    "version": "0.0.1",
+    "iot_class": "local_polling",
+    "quality_scale": "platinum",
+    "ssdp": [
+      {
+        "st": "urn:swidget:pico:1",
+        "manufacturer": "Swidget"
+
+      }
+    ],
+    "dhcp": [
+        { "registered_devices": true },
+        {
+          "hostname": "swidget*",
+          "macaddress": "E848B8*"
+        }
+    ]
+}

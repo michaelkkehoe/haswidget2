@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from pyswidget.device import SwidgetException
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -70,7 +71,31 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Swidget."""
 
     VERSION = 1
+    async def async_step_dhcp(self, discovery_info: dhcp.DhcpServiceInfo) -> FlowResult:
+        """Handle discovery via dhcp."""
+        return await self._async_handle_discovery(
+            discovery_info.ip, discovery_info.macaddress
+        )
 
+     async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
+        """Handle any discovery."""
+        await self.async_set_unique_id(dr.format_mac(mac))
+        self._abort_if_unique_id_configured(updates={CONF_HOST: host})
+        self._async_abort_entries_match({CONF_HOST: host})
+        self.context[CONF_HOST] = host
+        for progress in self._async_in_progress():
+            if progress.get("context", {}).get(CONF_HOST) == host:
+                return self.async_abort(reason="already_in_progress")
+
+        try:
+            _LOGGER.info(f"Found host: {host}")
+            # self._discovered_device = await self._async_try_connect(
+            #    host, raise_on_progress=True
+            # )
+        except SwidgetException:
+            return self.async_abort(reason="cannot_connect")
+        # return await self.async_step_discovery_confirm()
+   
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:

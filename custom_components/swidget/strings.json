@@ -5,8 +5,8 @@
       "user": {
         "description": "If you leave the host empty, discovery will be used to find devices.",
         "data": {
-          "host": "Host"
-          "password": "Password"
+          "host": "[%key:common::config_flow::data::host%]",
+          "password": "[%key:common::config_flow::data::password%]"
         }
       },
       "pick_device": {

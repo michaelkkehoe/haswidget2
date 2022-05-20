@@ -20,9 +20,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # TODO Store an API object for your platforms to access
     # hass.data[DOMAIN][entry.entry_id] = MyApi(...)
     log.info(entry.data)
+    print(entry.data)
     try:
         device: SwidgetDevice = await SwidgetDevice().ping()
-    except as ex:
+    except SwidgetException as ex:
         raise ConfigEntryNotReady from ex
         
     hass.data[DOMAIN][entry.entry_id] = SwidgetDataUpdateCoordinator(hass, device)

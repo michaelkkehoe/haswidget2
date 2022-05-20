@@ -19,7 +19,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Swidget from a config entry."""
     # TODO Store an API object for your platforms to access
     # hass.data[DOMAIN][entry.entry_id] = MyApi(...)
-    log.info(entry.data)
+    _LOGGER.error(entry.data)
     print(entry.data)
     try:
         device: SwidgetDevice = await SwidgetDevice().ping()

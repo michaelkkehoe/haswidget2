@@ -49,8 +49,6 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> None:
         """Fetch all device and sensor data from api."""
         try:
-            await self.device.update(update_children=self.update_children)
+            await self.device.update()
         except SwidgetException as ex:
             raise UpdateFailed(ex) from ex
-        finally:
-            self.update_children = True

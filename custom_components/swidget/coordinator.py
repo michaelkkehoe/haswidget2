@@ -4,7 +4,7 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 
-from swidget.device import SwidgetDevice, SwidgetException
+from pyswidget.device import SwidgetDevice, SwidgetException
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.debounce import Debouncer

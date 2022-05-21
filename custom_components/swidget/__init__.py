@@ -22,7 +22,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.error(entry.data)
     print(entry.data)
     try:
-        device: SwidgetDevice = await SwidgetDevice().ping()
+        device: SwidgetDevice = await SwidgetDevice(entry.data['host'], entry.data['password'], False).ping()
     except SwidgetException as ex:
         raise ConfigEntryNotReady from ex
         

@@ -77,6 +77,17 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             discovery_info.ip, discovery_info.macaddress
         )
 
+ 
+    async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
+        """Handle discovery via SSDP."""
+        discovered_ip = urlparse(discovery_info.ssdp_headers["location"]).hostname
+        discovered_mac = format_mac(discovery_info.upnp[ssdp.ATTR_UPNP_SERIAL])
+        print(discovered_ip)
+        print(discovered_mac)
+        return await self._async_handle_discovery(
+            discovered_ip, discovered_mac
+        )
+
     async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
         """Handle any discovery."""
         await self.async_set_unique_id(dr.format_mac(mac))

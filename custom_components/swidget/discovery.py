@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 import socket
 from typing import Awaitable, Callable, Dict, Optional, Type, cast
 from urllib.parse import urlparse
@@ -11,7 +12,7 @@ from .exceptions import SwidgetException
 
 RESPONSE_SEC = 2
 SWIDGET_ST = "urn:swidget:pico:1"
-
+_LOGGER = logging.getLogger(__name__)
 device_addresses = set()
 
 
@@ -65,6 +66,10 @@ class Discover:
     @staticmethod
     def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
         """Find SmartDevice subclass for device described by passed data."""
+        _LOGGER.error(f"Found device type is {device_type}....")
+        _LOGGER.error(DeviceType.Outlet)
+        _LOGGER.error(DeviceType.Switch)
+        _LOGGER.error(DeviceType.Dimmer)
         if device_type == DeviceType.Outlet:
             return SwidgetOutlet
         elif device_type == DeviceType.Switch:

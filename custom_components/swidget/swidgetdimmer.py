@@ -19,5 +19,4 @@ class SwidgetDimmer(SwidgetDevice):
     @property  # type: ignore
     def is_on(self) -> bool:
         """Return whether device is on."""
-        sys_info = self.sys_info
         return True

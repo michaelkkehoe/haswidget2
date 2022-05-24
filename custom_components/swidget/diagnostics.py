@@ -20,14 +20,7 @@ TO_REDACT = {
     "host",
     "hwId",
     "oemId",
-    "deviceId",
-    # Device location
-    "latitude",
-    "latitude_i",
-    "longitude",
-    "longitude_i",
-    # Cloud connectivity info
-    "username",
+    "deviceId"
 }
 
 

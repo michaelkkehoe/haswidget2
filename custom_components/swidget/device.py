@@ -37,6 +37,7 @@ class SwidgetDevice:
             summary = await response.json()
 
         self.model = summary["model"]
+        self.mac_address = summary["mac"]
         self.version = summary["version"]
         self.assemblies = {
             "host": SwidgetAssembly(summary["host"]),

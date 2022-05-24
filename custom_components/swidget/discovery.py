@@ -64,10 +64,10 @@ class Discover:
         return dev
 
     @staticmethod
-    def _get_device_class(device_type: str) -> Type[SmartDevice]:
+    def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
         """Find SmartDevice subclass for device described by passed data."""
         if "system" not in info or "get_sysinfo" not in info["system"]:
-            raise SmartDeviceException("No 'system' or 'get_sysinfo' in response")
+            raise SwidgetException("No 'system' or 'get_sysinfo' in response")
 
         sysinfo = info["system"]["get_sysinfo"]
         type_ = sysinfo.get("type", sysinfo.get("mic_type"))
@@ -77,7 +77,7 @@ class Discover:
         if "dev_name" in sysinfo and "Dimmer" in sysinfo["dev_name"]:
             return SmartDimmer
 
-        if "smartplug" in type_.lower():
+        if "dimmer" in type_.lower():
             if "children" in sysinfo:
                 return SmartStrip
 

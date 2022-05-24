@@ -6,7 +6,7 @@ from aiohttp import ClientSession, TCPConnector
 from enum import auto, Enum
 from typing import Any, Dict, List
 
-from pyswidget.exceptions import SwidgetException
+from .exceptions import SwidgetException
 
 _LOGGER = logging.getLogger(__name__)
 

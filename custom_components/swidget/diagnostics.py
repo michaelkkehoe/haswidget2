@@ -16,7 +16,6 @@ TO_REDACT = {
     # Device identifiers
     "alias",
     "mac",
-    "mic_mac",
     "host",
     "hwId",
     "oemId",

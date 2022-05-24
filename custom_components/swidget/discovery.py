@@ -8,6 +8,9 @@ from urllib.parse import urlparse
 import ssdp
 
 from .device import DeviceType, SwidgetDevice
+from .swidgetdimmer import SwidgetDimmer
+from .swidgetoutlet import SwidgetOutlet
+from .swidgetswitch import SwidgetSwitch
 from .exceptions import SwidgetException
 
 RESPONSE_SEC = 2

@@ -74,6 +74,13 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
             return
         await self.device.turn_on()  # type: ignore[arg-type]
 
+    @property
+    def supported_color_modes(self) -> set[ColorMode | str] | None:
+        """Return list of available color modes."""
+        modes: set[ColorMode | str] = set()
+        modes.add(ColorMode.BRIGHTNESS)
+        return modes
+    
     @async_refresh_after
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the light off."""

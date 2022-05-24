@@ -34,7 +34,7 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
         super().__init__(
             hass,
             _LOGGER,
-            name=device.host,
+            name=device.ip_address,
             update_interval=update_interval,
             # We don't want an immediate refresh since the device
             # takes a moment to reflect the state change

@@ -15,3 +15,9 @@ class SwidgetDimmer(SwidgetDevice):
         await self.send_command(
             assembly="host", component="0", function="level", command={"now": brightness}
         )
+
+    @property  # type: ignore
+    def is_on(self) -> bool:
+        """Return whether device is on."""
+        sys_info = self.sys_info
+        return True

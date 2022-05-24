@@ -2,7 +2,7 @@ from .device import (
     DeviceType,
     SwidgetDevice
 )
-from 
+from .exceptions import SwidgetException
 
 
 class SwidgetDimmer(SwidgetDevice):
@@ -20,8 +20,7 @@ class SwidgetDimmer(SwidgetDevice):
         if not self.is_dimmable:
             raise SwidgetException("Device is not dimmable.")
 
-        sys_info = self.sys_info
-        return int(sys_info["brightness"])
+        return 100
 
     async def set_brightness(self, brightness):
         """Set the brightness of the device."""

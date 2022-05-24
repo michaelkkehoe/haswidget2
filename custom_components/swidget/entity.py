@@ -50,7 +50,7 @@ class CoordinatedSwidgetEntity(CoordinatorEntity[SwidgetDataUpdateCoordinator]):
             identifiers={(DOMAIN, str(self.device.id))},
             manufacturer="Swidget",
             model=self.device.model,
-            name=self.device.alias,
+            name=self.device.mac_address,
             sw_version=self.device.version,
         )
 

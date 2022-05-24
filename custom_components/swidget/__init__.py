@@ -16,6 +16,23 @@ from .coordinator import SwidgetDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the TP-Link component."""
+    hass.data[DOMAIN] = {}
+
+    if discovered_devices := await async_discover_devices(hass):
+        async_trigger_discovery(hass, discovered_devices)
+
+    async def _async_discovery(*_: Any) -> None:
+        if discovered := await async_discover_devices(hass):
+            async_trigger_discovery(hass, discovered)
+
+    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, _async_discovery)
+    async_track_time_interval(hass, _async_discovery, DISCOVERY_INTERVAL)
+
+    return True
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Swidget from a config entry."""
     # TODO Store an API object for your platforms to access

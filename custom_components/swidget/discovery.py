@@ -54,8 +54,6 @@ class Discover:
         :rtype: SwidgetDevice
         :return: Object for querying/controlling found device.
         """
-        protocol = TPLinkSmartHomeProtocol(host)
-
         swidget_device = await SwidgetDevice(host, password, ssl).get_summary()
         device_type = swidget_device.device_type
         device_class = Discover._get_device_class(device_type)

@@ -5,6 +5,9 @@ from urllib.parse import urlparse
 
 import ssdp
 
+from .device import SwidgetDevice
+from .exceptions import SwidgetException
+
 RESPONSE_SEC = 2
 SWIDGET_ST = "urn:swidget:pico:1"
 
@@ -43,7 +46,7 @@ class Discover:
         return device_addresses
 
     @staticmethod
-    async def discover_single(host: str) -> SwidgetDevice:
+    async def discover_single(host: str, password: str) -> SwidgetDevice:
         """Discover a single device by the given IP address.
 
         :param host: Hostname of device to query
@@ -52,16 +55,16 @@ class Discover:
         """
         protocol = TPLinkSmartHomeProtocol(host)
 
-        info = await protocol.query(Discover.DISCOVERY_QUERY)
-
-        device_class = Discover._get_device_class(info)
-        dev = device_class(host)
+        swidget_device = await SwidgetDevice(host, password, False).get_summary()
+        device_type = swidget_device.device_type
+        device_class = Discover._get_device_class(device_type)
+        dev = device_class(host, password, False)
         await dev.update()
 
         return dev
 
     @staticmethod
-    def _get_device_class(info: dict) -> Type[SmartDevice]:
+    def _get_device_class(device_type: str) -> Type[SmartDevice]:
         """Find SmartDevice subclass for device described by passed data."""
         if "system" not in info or "get_sysinfo" not in info["system"]:
             raise SmartDeviceException("No 'system' or 'get_sysinfo' in response")
@@ -86,5 +89,5 @@ class Discover:
 
             return SmartBulb
 
-        raise SmartDeviceException("Unknown device type: %s" % type_)
+        raise SwidgetException("Unknown device type: %s" % type_)
     

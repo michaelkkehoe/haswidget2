@@ -29,7 +29,6 @@ class SwidgetDimmer(SwidgetDevice):
         )
         
     @property  # type: ignore
-    @requires_update
     def is_dimmable(self) -> bool:
         """Whether the switch supports brightness changes."""
         return True

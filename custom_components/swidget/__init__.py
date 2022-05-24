@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import logging
 
-from device import SwidgetDevice
-from exceptions import SwidgetException
+from .device import SwidgetDevice
+from .exceptions import SwidgetException
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform

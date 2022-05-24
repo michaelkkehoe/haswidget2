@@ -62,17 +62,17 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
     @async_refresh_after
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the light on."""
-        brightness, transition = self._async_extract_brightness_transition(**kwargs)
-        await self._async_turn_on_with_brightness(brightness, transition)
+        if (brightness := kwargs.get(ATTR_BRIGHTNESS)) is not None:
+            brightness = round((brightness * 100.0) / 255.0)
+        await self._async_turn_on_with_brightness(brightness)
 
     async def _async_turn_on_with_brightness(
-        self, brightness: int | None, transition: int | None
-    ) -> None:
+        self, brightness: int | None) -> None:
         # Fallback to adjusting brightness or turning the bulb on
         if brightness is not None:
-            await self.device.set_brightness(brightness, transition=transition)
+            await self.device.set_brightness(brightness)
             return
-        await self.device.turn_on(transition=transition)  # type: ignore[arg-type]
+        await self.device.turn_on()  # type: ignore[arg-type]
 
     @async_refresh_after
     async def async_turn_off(self, **kwargs: Any) -> None:
@@ -83,4 +83,3 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
     def brightness(self) -> int | None:
         """Return the brightness of this light between 0..255."""
         return round((self.device.brightness * 255.0) / 100.0)
-

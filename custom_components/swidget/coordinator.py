@@ -29,6 +29,8 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
         update_interval = timedelta(seconds=10)
         print(device)
         print(device.__dict__)
+        _LOGGER.error(device)
+        _LOGGER.error(device.__dict__)
         super().__init__(
             hass,
             _LOGGER,

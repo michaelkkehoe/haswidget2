@@ -66,14 +66,11 @@ class Discover:
     @staticmethod
     def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
         """Find SmartDevice subclass for device described by passed data."""
-        _LOGGER.error(f"Found device type is {device_type}....")
-        _LOGGER.error(DeviceType.Outlet)
-        _LOGGER.error(DeviceType.Switch)
-        _LOGGER.error(DeviceType.Dimmer)
-        if device_type == DeviceType.Outlet:
+        # TODO: FIX THIS
+        if device_type == "outlet":
             return SwidgetOutlet
-        elif device_type == DeviceType.Switch:
+        elif device_type == "switch":
             return SwidgetSwitch
-        elif device_type == DeviceType.Dimmer:
+        elif device_type == "dimmer":
             return SwidgetDimmer
         raise SwidgetException("Unknown device type: %s" % device_type)

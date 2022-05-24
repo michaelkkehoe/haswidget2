@@ -7,7 +7,7 @@
     "dependencies": ["network"],
     "codeowners": ["@michaelkkehoe"],
     "requirements": ["pyswidget @ git+https://github.com/michaelkkehoe/pyswidget.git#test"],
-    "version": "0.0.1",
+    "version": "0.0.2",
     "iot_class": "local_polling",
     "quality_scale": "platinum",
     "ssdp": [

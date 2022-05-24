@@ -31,7 +31,7 @@ async def async_get_config_entry_diagnostics(
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     print(coordinator)
     print(coordinator.device)
-    print(coordinator.device.hw_info())
+    print(coordinator.device.hw_info)
     return async_redact_data(
         {"device_last_response": coordinator.device.hw_info}, TO_REDACT
     )

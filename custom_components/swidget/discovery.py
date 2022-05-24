@@ -54,7 +54,7 @@ class Discover:
         :rtype: SwidgetDevice
         :return: Object for querying/controlling found device.
         """
-        swidget_device = await SwidgetDevice(host, password, ssl)
+        swidget_device = SwidgetDevice(host, password, ssl)
         await swidget_device.get_summary()
         device_type = swidget_device.device_type
         device_class = Discover._get_device_class(device_type)

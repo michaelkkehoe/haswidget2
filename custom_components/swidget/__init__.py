@@ -5,6 +5,7 @@ import logging
 
 from .device import SwidgetDevice
 from .exceptions import SwidgetException
+from .discovery import Discover
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform

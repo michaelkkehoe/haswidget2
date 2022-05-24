@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 
 import ssdp
 
-from .device import SwidgetDevice
+from .device import DeviceType, SwidgetDevice
 from .exceptions import SwidgetException
 
 RESPONSE_SEC = 2
@@ -66,28 +66,10 @@ class Discover:
     @staticmethod
     def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
         """Find SmartDevice subclass for device described by passed data."""
-        if "system" not in info or "get_sysinfo" not in info["system"]:
-            raise SwidgetException("No 'system' or 'get_sysinfo' in response")
-
-        sysinfo = info["system"]["get_sysinfo"]
-        type_ = sysinfo.get("type", sysinfo.get("mic_type"))
-        if type_ is None:
-            raise SmartDeviceException("Unable to find the device type field!")
-
-        if "dev_name" in sysinfo and "Dimmer" in sysinfo["dev_name"]:
-            return SmartDimmer
-
-        if "dimmer" in type_.lower():
-            if "children" in sysinfo:
-                return SmartStrip
-
-            return SmartPlug
-
-        if "smartbulb" in type_.lower():
-            if "length" in sysinfo:  # strips have length
-                return SmartLightStrip
-
-            return SmartBulb
-
-        raise SwidgetException("Unknown device type: %s" % type_)
-    
+        if device_type == DeviceType.Outlet:
+            return SwidgetOutlet
+        elif device_type == DeviceType.Switch:
+            return SwidgetSwitch
+        elif device_type == DeviceType.Dimmer:
+            return SwidgetDimmer
+        raise SwidgetException("Unknown device type: %s" % device_type)

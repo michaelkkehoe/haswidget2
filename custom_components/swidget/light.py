@@ -18,7 +18,6 @@ from homeassistant.helpers import entity_platform
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from . import legacy_device_id
 from .const import DOMAIN
 from .coordinator import SwidgetDataUpdateCoordinator
 from .entity import CoordinatedSwidgetEntity, async_refresh_after
@@ -58,14 +57,7 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
         """Initialize the switch."""
         super().__init__(device, coordinator)
         # For backwards compat with pyHS100
-        if device.is_dimmer:
-            # Dimmers used to use the switch format since
-            # pyHS100 treated them as SmartPlug but the old code
-            # created them as lights
-            # https://github.com/home-assistant/core/blob/2021.9.7/homeassistant/components/tplink/common.py#L86
-            self._attr_unique_id = legacy_device_id(device)
-        else:
-            self._attr_unique_id = device.mac.replace(":", "").upper()
+        self._attr_unique_id = device.mac_address.replace(":", "").upper()
 
     @async_refresh_after
     async def async_turn_on(self, **kwargs: Any) -> None:

@@ -27,6 +27,8 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize DataUpdateCoordinator to gather data for specific SmartPlug."""
         self.device = device
         update_interval = timedelta(seconds=10)
+        print(device)
+        print(device.__dict__)
         super().__init__(
             hass,
             _LOGGER,

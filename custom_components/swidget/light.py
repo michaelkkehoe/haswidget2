@@ -10,6 +10,7 @@ import voluptuous as vol
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
+    ColorMode,
     LightEntity,
 )
 from homeassistant.config_entries import ConfigEntry
@@ -80,7 +81,12 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
         modes: set[ColorMode | str] = set()
         modes.add(ColorMode.BRIGHTNESS)
         return modes
-    
+ 
+    @property
+    def color_mode(self) -> ColorMode:
+        """Return the active color mode."""
+        return ColorMode.BRIGHTNESS
+
     @async_refresh_after
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the light off."""

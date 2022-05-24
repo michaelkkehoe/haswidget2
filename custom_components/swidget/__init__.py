@@ -3,7 +3,8 @@ from __future__ import annotations
 
 import logging
 
-from pyswidget import SwidgetDevice, SwidgetException
+from myswidget.device import SwidgetDevice
+from myswidget.exceptions import SwidgetException
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform

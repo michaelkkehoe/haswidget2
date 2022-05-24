@@ -47,12 +47,11 @@ class CoordinatedSwidgetEntity(CoordinatorEntity[SwidgetDataUpdateCoordinator]):
         """Return information about the device."""
         return DeviceInfo(
             connections={(dr.CONNECTION_NETWORK_MAC, self.device.mac_address)},
-            identifiers={(DOMAIN, str(self.device.device_id))},
+            identifiers={(DOMAIN, str(self.device.id))},
             manufacturer="Swidget",
             model=self.device.model,
             name=self.device.alias,
-            sw_version=self.device.hw_info["sw_ver"],
-            hw_version=self.device.hw_info["hw_ver"],
+            sw_version=self.device.version,
         )
 
     @property

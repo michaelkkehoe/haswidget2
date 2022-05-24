@@ -14,9 +14,9 @@ _LOGGER = logging.getLogger(__name__)
 class DeviceType(Enum):
     """Device type enum."""
 
-    Dimmer = auto()
-    Outlet = auto()
-    Switch = auto()
+    Dimmer = "dimmer"
+    Outlet = "outlet"
+    Switch = "switch"
     Unknown = -1
 
 

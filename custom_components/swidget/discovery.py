@@ -47,7 +47,7 @@ class Discover:
         return device_addresses
 
     @staticmethod
-    async def discover_single(host: str, password: str) -> SwidgetDevice:
+    async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
         """Discover a single device by the given IP address.
 
         :param host: Hostname of device to query
@@ -56,7 +56,7 @@ class Discover:
         """
         protocol = TPLinkSmartHomeProtocol(host)
 
-        swidget_device = await SwidgetDevice(host, password, False).get_summary()
+        swidget_device = await SwidgetDevice(host, password, ssl).get_summary()
         device_type = swidget_device.device_type
         device_class = Discover._get_device_class(device_type)
         dev = device_class(host, password, False)

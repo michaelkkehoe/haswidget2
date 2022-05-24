@@ -5,7 +5,7 @@ from datetime import timedelta
 import logging
 
 from .device import SwidgetDevice
-from .exceptions SwidgetException
+from .exceptions import SwidgetException
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.debounce import Debouncer

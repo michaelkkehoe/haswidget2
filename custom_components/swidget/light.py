@@ -5,7 +5,7 @@ from collections.abc import Sequence
 import logging
 from typing import Any, Final, cast
 
-from .swidgetDimmer import SwidgetDimmer
+from .swidgetdimmer import SwidgetDimmer
 import voluptuous as vol
 
 from homeassistant.components.light import (

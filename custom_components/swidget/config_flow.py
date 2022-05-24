@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from pyswidget.exceptions import SwidgetException
+from myswidget.exceptions import SwidgetException
 import voluptuous as vol
 
 from homeassistant import config_entries

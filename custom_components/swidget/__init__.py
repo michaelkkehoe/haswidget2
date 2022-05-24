@@ -8,7 +8,13 @@ from .exceptions import SwidgetException
 from .discovery import Discover
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_MAC,
+    CONF_NAME,
+    EVENT_HOMEASSISTANT_STARTED,
+    Platform
+)
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN, PLATFORMS

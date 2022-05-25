@@ -20,7 +20,7 @@ class SwidgetDimmer(SwidgetDevice):
         if not self.is_dimmable:
             raise SwidgetException("Device is not dimmable.")
 
-        return 100
+        return self.assemblies['host'].components["0"]["level"]["now"]
 
     async def set_brightness(self, brightness):
         """Set the brightness of the device."""
@@ -36,4 +36,7 @@ class SwidgetDimmer(SwidgetDevice):
     @property  # type: ignore
     def is_on(self) -> bool:
         """Return whether device is on."""
-        return True
+        dimmer_state = self.assemblies['host'].components["0"]["toggle"]["state"]
+        if dimmer_state == "on":
+            return True
+        return False

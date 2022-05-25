@@ -5,6 +5,7 @@ from typing import cast
 
 from pyswidget.device import SwidgetDevice
 
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -45,7 +46,7 @@ class SwidgetSensorEntityDescription(SensorEntityDescription):
     emeter_attr: str | None = None
     precision: int | None = None
 
-ENERGY_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
+SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     SwidgetSensorEntityDescription(
         key=ATTR_CURRENT_POWER_W,
         native_unit_of_measurement=POWER_WATT,
@@ -57,39 +58,30 @@ ENERGY_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     ),
     SwidgetSensorEntityDescription(
         key=ATTR_TOTAL_ENERGY_KWH,
-        native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
-        device_class=SensorDeviceClass.ENERGY,
+        native_unit_of_measurement=TEMP_CELSIUS,
+        device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.TOTAL_INCREASING,
-        name="Total Consumption",
+        name="Temperature",
         emeter_attr="total",
+        precision=1,
+    ),
+    SwidgetSensorEntityDescription(
+        key=ATTR_TODAY_ENERGY_KWH,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.HUMIDITY,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        name="Humidity",
         precision=3,
     ),
     SwidgetSensorEntityDescription(
         key=ATTR_TODAY_ENERGY_KWH,
-        native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
-        device_class=SensorDeviceClass.ENERGY,
+        native_unit_of_measurement=PRESSURE_KPA,
+        device_class=SensorDeviceClass.PRESSURE
         state_class=SensorStateClass.TOTAL_INCREASING,
-        name="Today's Consumption",
+        name="Air Pressure",
         precision=3,
     ),
 
-    SwidgetSensorEntityDescription(
-        key=ATTR_TODAY_ENERGY_KWH,
-        native_unit_of_measurement=ENERGY_KILO_WATT_HOUR,
-        device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
-        name="Today's Consumption",
-        precision=3,
-    ),
-    TPLinkSensorEntityDescription(
-        key=ATTR_VOLTAGE,
-        native_unit_of_measurement=ELECTRIC_POTENTIAL_VOLT,
-        device_class=SensorDeviceClass.VOLTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        name="Voltage",
-        emeter_attr="voltage",
-        precision=1,
-    ),
 )
 
 def async_emeter_from_device(
@@ -118,13 +110,11 @@ async def async_setup_entry(
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities: list[SwidgetSensor] = []
     parent = coordinator.device
-    if not parent.has_emeter:
-        return
 
     def _async_sensors_for_device(device: SwidgetDevice) -> list[SwidgetSensor]:
         return [
             SwidgetSensor(device, coordinator, description)
-            for description in ENERGY_SENSORS
+            for description in SWIDGET_SENSORS
             if async_emeter_from_device(device, description) is not None
         ]
 

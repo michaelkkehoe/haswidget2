@@ -83,13 +83,23 @@ class SwidgetDevice:
     async def ping(self):
         try:
             async with self._session.get(
-                url=f"https://{self.ip_address}/ping?x-secret-key={self.secret_key}",
+                url=f"https://{self.ip_address}/ping",
                 ssl=self.ssl
             ) as response:
                 return response.text
         except:
             raise SwidgetException
 
+    async def ping(self):
+        try:
+            async with self._session.get(
+                url=f"https://{self.ip_address}/blink?x-user-key=dqMMBX9deuwtkkp784ewTjqo76IYfThV",
+                ssl=self.ssl
+            ) as response:
+                return response.text
+        except:
+            raise SwidgetException
+            
     async def turn_on(self):
         """Turn the device on."""
         await self.send_command(

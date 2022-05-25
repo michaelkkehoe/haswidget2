@@ -32,7 +32,7 @@ async def async_setup_entry(
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     async_add_entities(
-        [SwidgetIdentifyButton(coordinator.device), coordinator)]
+        [SwidgetIdentifyButton(coordinator.device, coordinator)]
     )
 
 

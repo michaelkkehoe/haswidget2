@@ -25,29 +25,38 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Elgato button based on a config entry."""
-    data: HomeAssistantSwidgetData = hass.data[DOMAIN][entry.entry_id]
+    # data: HomeAssistantSwidgetData = hass.data[DOMAIN][entry.entry_id]
+    #async_add_entities(
+    #    [SwidgetIdentifyButton(data.device, device.info, entry.data.get(CONF_MAC))]
+    #)
+    coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+
     async_add_entities(
-        [SwidgetIdentifyButton(data.device, device.info, entry.data.get(CONF_MAC))]
+        [SwidgetIdentifyButton(coordinator.device), coordinator)]
     )
 
 
-class ElgatoIdentifyButton(ElgatoEntity, ButtonEntity):
+class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
     """Defines an Elgato identify button."""
 
-    def __init__(self, client: Elgato, info: Info, mac: str | None) -> None:
+    def __init__(
+        self,
+        device: SwidgetDimmer,
+        coordinator: SwidgetDataUpdateCoordinator,
+    ) -> None:
         """Initialize the button entity."""
-        super().__init__(client, info, mac)
+        super().__init__(device, coordinator)
         self.entity_description = ButtonEntityDescription(
             key="identify",
             name="Identify",
             icon="mdi:help",
             entity_category=EntityCategory.CONFIG,
         )
-        self._attr_unique_id = f"{info.id}_{self.entity_description.key}"
+        self._attr_unique_id = f"{device.id}_{self.entity_description.key}"
 
     async def async_press(self) -> None:
         """Identify the light, will make it blink."""
         try:
-            await self.client.blink()
+            await self.device.blink()
         except ElgatoError:
             _LOGGER.exception("An error occurred while identifying the Elgato Light")

@@ -30,10 +30,6 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import (
-    ATTR_CURRENT_A,
-    ATTR_CURRENT_POWER_W,
-    ATTR_TODAY_ENERGY_KWH,
-    ATTR_TOTAL_ENERGY_KWH,
     DOMAIN,
 )
 from .coordinator import SwidgetDataUpdateCoordinator

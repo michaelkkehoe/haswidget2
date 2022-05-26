@@ -141,6 +141,13 @@ class SwidgetDevice:
         return total_consumption
 
     @property
+    def realtime_values(self):
+        return_dict = {}
+        for feature in self.features:
+            return_dict[feature] = self.get_function_values(feature)
+        return return_dict
+
+    @property
     def features(self) -> List[str]:
         """Return a set of features that the device supports."""
         try:

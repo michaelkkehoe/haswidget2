@@ -132,7 +132,7 @@ class SwidgetDevice:
         if plug_id == "all":
             return_dict = {}
             for id, properties in self.assemblies['host'].components.items():
-                return_dict[str(id)] = properties.functions['power']['current']
+                return_dict[f"power_{id}"] = properties.functions['power']['current']
                 return return_dict
         return self.assemblies['host'].components[str(plug_id)].functions['power']['current']
 

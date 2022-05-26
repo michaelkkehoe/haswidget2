@@ -133,7 +133,7 @@ class SwidgetDevice:
             return_dict = {}
             for id, properties in self.assemblies['host'].components.items():
                 return_dict[f"power_{id}"] = properties.functions['power']['current']
-                return return_dict
+            return return_dict
         return self.assemblies['host'].components[str(plug_id)].functions['power']['current']
 
     async def total_consumption(self):

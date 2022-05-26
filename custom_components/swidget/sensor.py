@@ -91,6 +91,7 @@ def async_emeter_from_device(
     if attr := description.emeter_attr:
         if (val := device.realtime_values.get(attr, None)) is None:
             return None
+        _LOGGER.error(val)
         return round(cast(float, val), description.precision)
 
     # ATTR_TODAY_ENERGY_KWH

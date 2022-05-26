@@ -65,7 +65,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         name="Temperature",
-        emeter_attr="total",
+        emeter_attr="temperature",
         precision=1,
     ),
     SwidgetSensorEntityDescription(
@@ -74,6 +74,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
         name="Humidity",
+        emeter_attr="humidity",
         precision=3,
     ),
     SwidgetSensorEntityDescription(
@@ -82,6 +83,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
         name="Air Pressure",
+        emeter_attr="pressure",
         precision=3,
     ),
 )

@@ -54,7 +54,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
         name="Current Consumption",
-        emeter_attr="power",
+        emeter_attr="power_0",
         precision=1,
     ),
     SwidgetSensorEntityDescription(
@@ -63,7 +63,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
         name="Current Consumption",
-        emeter_attr="power",
+        emeter_attr="power_1",
         precision=1,
     ),
     SwidgetSensorEntityDescription(

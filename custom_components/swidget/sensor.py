@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import cast
 
@@ -37,6 +38,8 @@ from .const import (
 )
 from .coordinator import SwidgetDataUpdateCoordinator
 from .entity import CoordinatedSwidgetEntity
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass

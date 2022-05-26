@@ -151,6 +151,7 @@ class SwidgetDevice:
         for feature in self.features:
             _LOGGER.error(feature)
             return_dict.update(self.get_function_values(feature))
+        return_dict.update(self.get_child_comsumption("all"))
         return return_dict
 
     @property

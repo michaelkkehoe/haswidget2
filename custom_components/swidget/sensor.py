@@ -131,7 +131,9 @@ def async_emeter_from_device(
             return None
         _LOGGER.error(val)
         if attr == "occupied":
-            return val
+            if val is True:
+                return "on"
+            return "off"
         return round(cast(float, val), description.precision)
 
     # ATTR_TODAY_ENERGY_KWH

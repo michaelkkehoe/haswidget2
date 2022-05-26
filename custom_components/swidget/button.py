@@ -14,6 +14,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .coordinator import SwidgetDataUpdateCoordinator
+from .exceptions import SwidgetException
 from .entity import CoordinatedSwidgetEntity, async_refresh_after
 
 _LOGGER = logging.getLogger(__name__)
@@ -58,5 +59,5 @@ class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
         """Identify the light, will make it blink."""
         try:
             await self.device.blink()
-        except ElgatoError:
+        except SwidgetException:
             _LOGGER.exception("An error occurred while identifying the Elgato Light")

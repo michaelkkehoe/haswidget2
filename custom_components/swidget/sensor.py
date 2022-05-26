@@ -86,7 +86,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         key="Motion",
         device_class=BinarySensorDeviceClass.MOTION,
         state_class=SensorStateClass.MEASUREMENT,
-        name="Moition",
+        name="Motion",
         emeter_attr="occupied",
         precision=0,
     ),    

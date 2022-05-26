@@ -49,7 +49,16 @@ class SwidgetSensorEntityDescription(SensorEntityDescription):
 
 SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     SwidgetSensorEntityDescription(
-        key="Power",
+        key="Power 0",
+        native_unit_of_measurement=POWER_WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        name="Current Consumption",
+        emeter_attr="power",
+        precision=1,
+    ),
+    SwidgetSensorEntityDescription(
+        key="Power 1",
         native_unit_of_measurement=POWER_WATT,
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
@@ -135,13 +144,6 @@ def async_emeter_from_device(
                 return "on"
             return "off"
         return round(cast(float, val), description.precision)
-
-    # ATTR_TODAY_ENERGY_KWH
-    if (emeter_today := device.emeter_today) is not None:
-        return round(cast(float, emeter_today), description.precision)
-    # today's consumption not available, when device was off all the day
-    # bulb's do not report this information, so filter it out
-    return None if device.is_bulb else 0.0
 
 
 async def async_setup_entry(

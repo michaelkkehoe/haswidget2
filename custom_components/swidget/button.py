@@ -13,7 +13,8 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
-from .entity import ElgatoEntity
+from .coordinator import SwidgetDataUpdateCoordinator
+from .entity import CoordinatedSwidgetEntity, async_refresh_after
 
 _LOGGER = logging.getLogger(__name__)
 

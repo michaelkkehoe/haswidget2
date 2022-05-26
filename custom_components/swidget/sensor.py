@@ -89,7 +89,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
         name="Air Quality",
-        emeter_attr="aq",
+        emeter_attr="iaq",
         precision=0,
     ),
     SwidgetSensorEntityDescription(

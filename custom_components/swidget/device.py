@@ -129,6 +129,11 @@ class SwidgetDevice:
 
     async def get_child_comsumption(self, plug_id=0):
         """Get the power consumption of a plug in watts."""
+        if plug_id == "all":
+            return_dict = {}
+            for id, properties in self.assemblies['host'].components.items():
+                return_dict[str(id)] = properties.functions['power']['current']
+                return return_dict
         return self.assemblies['host'].components[str(plug_id)].functions['power']['current']
 
     async def total_consumption(self):

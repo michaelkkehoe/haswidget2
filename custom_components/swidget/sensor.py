@@ -89,6 +89,8 @@ def async_emeter_from_device(
 ) -> float | None:
     """Map a sensor key to the device attribute."""
     if attr := description.emeter_attr:
+        _LOGGER.error(f"emeter_attr: {description.emeter_attr}")
+        _LOGGER.error(f"Realtime_values: {device.realtime_values}")
         if (val := device.realtime_values.get(attr, None)) is None:
             return None
         _LOGGER.error(val)

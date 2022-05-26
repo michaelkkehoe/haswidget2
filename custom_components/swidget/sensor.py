@@ -60,7 +60,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         key=ATTR_TOTAL_ENERGY_KWH,
         native_unit_of_measurement=TEMP_CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.MEASUREMENT,
         name="Temperature",
         emeter_attr="total",
         precision=1,
@@ -69,19 +69,18 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         key=ATTR_TODAY_ENERGY_KWH,
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.MEASUREMENT,
         name="Humidity",
         precision=3,
     ),
     SwidgetSensorEntityDescription(
         key=ATTR_TODAY_ENERGY_KWH,
         native_unit_of_measurement=PRESSURE_KPA,
-        device_class=SensorDeviceClass.PRESSURE
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        device_class=SensorDeviceClass.PRESSURE,
+        state_class=SensorStateClass.MEASUREMENT,
         name="Air Pressure",
         precision=3,
     ),
-
 )
 
 def async_emeter_from_device(

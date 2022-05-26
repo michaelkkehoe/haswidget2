@@ -26,7 +26,7 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> None:
         """Initialize DataUpdateCoordinator to gather data for specific SmartPlug."""
         self.device = device
-        update_interval = timedelta(seconds=10)
+        update_interval = timedelta(seconds=1)
         print(device)
         print(device.__dict__)
         _LOGGER.error(device)

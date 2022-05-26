@@ -71,7 +71,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         name="Humidity",
         emeter_attr="humidity",
-        precision=3,
+        precision=0,
     ),
     SwidgetSensorEntityDescription(
         key="Pressure",
@@ -80,8 +80,16 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         name="Air Pressure",
         emeter_attr="pressure",
-        precision=3,
+        precision=0,
     ),
+    SwidgetSensorEntityDescription(
+        key="Motion",
+        device_class=BinarySensorDeviceClass.MOTION,
+        state_class=SensorStateClass.MEASUREMENT,
+        name="Moition",
+        emeter_attr="occupied",
+        precision=0,
+    ),    
 )
 
 def async_emeter_from_device(
@@ -94,6 +102,8 @@ def async_emeter_from_device(
         if (val := device.realtime_values.get(attr, None)) is None:
             return None
         _LOGGER.error(val)
+        if attr == "occupied":
+            return val
         return round(cast(float, val), description.precision)
 
     # ATTR_TODAY_ENERGY_KWH

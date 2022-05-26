@@ -47,7 +47,7 @@ class SwidgetSensorEntityDescription(SensorEntityDescription):
 
 SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     SwidgetSensorEntityDescription(
-        key=ATTR_CURRENT_POWER_W,
+        key="Power",
         native_unit_of_measurement=POWER_WATT,
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,

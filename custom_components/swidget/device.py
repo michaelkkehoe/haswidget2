@@ -90,7 +90,7 @@ class SwidgetDevice:
         except:
             raise SwidgetException
 
-    async def ping(self):
+    async def blink(self):
         try:
             async with self._session.get(
                 url=f"https://{self.ip_address}/blink?x-user-key=dqMMBX9deuwtkkp784ewTjqo76IYfThV",

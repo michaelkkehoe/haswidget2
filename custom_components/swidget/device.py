@@ -144,6 +144,7 @@ class SwidgetDevice:
     def realtime_values(self):
         return_dict = {}
         for feature in self.features:
+            _LOGGER.error(feature)
             return_dict[feature] = self.get_function_values(feature)
         return return_dict
 
@@ -161,8 +162,10 @@ class SwidgetDevice:
         return_values = dict()
         for function, data in self.assemblies['insert'].components[function].functions.items():
             if function == "motion":
+                _LOGGER.error(data)
                 return_values[function] = data['state']
             else:
+                _LOGGER.error(data)
                 return_values[function] = data['now']
         return return_values
 

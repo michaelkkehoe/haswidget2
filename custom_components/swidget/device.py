@@ -145,7 +145,7 @@ class SwidgetDevice:
         return_dict = {}
         for feature in self.features:
             _LOGGER.error(feature)
-            return_dict.extend(self.get_function_values(feature))
+            return_dict.update(self.get_function_values(feature))
         return return_dict
 
     @property

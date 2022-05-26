@@ -20,7 +20,7 @@ from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
     POWER_WATT,
-    PRESSURE_KPA,
+    PRESSURE_HPA,
     TEMP_CELSIUS,
 
 )
@@ -77,7 +77,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     ),
     SwidgetSensorEntityDescription(
         key="Pressure",
-        native_unit_of_measurement=PRESSURE_KPA,
+        native_unit_of_measurement=PRESSURE_HPA,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
         name="Air Pressure",
@@ -86,7 +86,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     ),
     SwidgetSensorEntityDescription(
         key="Air Quality",
-        device_class=SensorDeviceClass.PRESSURE,
+        device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
         name="Air Quality",
         emeter_attr="aq",

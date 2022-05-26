@@ -60,7 +60,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         precision=1,
     ),
     SwidgetSensorEntityDescription(
-        key=ATTR_TOTAL_ENERGY_KWH,
+        key="Temperature",
         native_unit_of_measurement=TEMP_CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -69,7 +69,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         precision=1,
     ),
     SwidgetSensorEntityDescription(
-        key=ATTR_TODAY_ENERGY_KWH,
+        key="Humidity",
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
@@ -78,7 +78,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         precision=3,
     ),
     SwidgetSensorEntityDescription(
-        key=ATTR_TODAY_ENERGY_KWH,
+        key="Pressure",
         native_unit_of_measurement=PRESSURE_KPA,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,

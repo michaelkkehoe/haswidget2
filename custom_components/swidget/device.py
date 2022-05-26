@@ -162,10 +162,10 @@ class SwidgetDevice:
         return_values = dict()
         for function, data in self.assemblies['insert'].components[function].functions.items():
             if function == "motion":
-                _LOGGER.error(data)
+                _LOGGER.error(f"motion: {function}: {data}")
                 return_values[function] = data['state']
             else:
-                _LOGGER.error(data)
+                _LOGGER.error(f"non-motion: {function}: {data}")
                 return_values[function] = data['now']
         return return_values
 

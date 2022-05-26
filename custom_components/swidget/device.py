@@ -127,7 +127,7 @@ class SwidgetDevice:
             "model": self.model
         }
 
-    async def get_child_comsumption(self, plug_id=0):
+    def get_child_comsumption(self, plug_id=0):
         """Get the power consumption of a plug in watts."""
         if plug_id == "all":
             return_dict = {}
@@ -151,7 +151,7 @@ class SwidgetDevice:
         for feature in self.features:
             _LOGGER.error(feature)
             return_dict.update(self.get_function_values(feature))
-        power_values = await self.get_child_comsumption("all")
+        power_values = self.get_child_comsumption("all")
         return_dict.update(power_values)
         return return_dict
 

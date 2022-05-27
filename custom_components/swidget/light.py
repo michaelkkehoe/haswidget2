@@ -37,12 +37,11 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up switches."""
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
-
-    async_add_entities(
-        [SwidgetSmartDimmer(cast(SwidgetDimmer, coordinator.device), coordinator)]
-    )
+    if coordinator.device.is_dimmer:
+        async_add_entities(
+            [SwidgetSmartDimmer(cast(SwidgetDimmer, coordinator.device), coordinator)]
+        )
 
 
 class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):

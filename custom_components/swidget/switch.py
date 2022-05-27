@@ -8,9 +8,6 @@ from typing import Any, Final, cast
 from .swidgetoutlet import SwidgetOutlet
 import voluptuous as vol
 
-from homeassistant.components.light import (
-    SwitchEntity,
-)
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback

@@ -11,6 +11,7 @@ import voluptuous as vol
 from homeassistant.components.light import (
     SwitchEntity,
 )
+from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_platform

@@ -185,18 +185,18 @@ class SwidgetDevice:
 
     @property
     def is_outlet(self) -> bool:
-        """Return True if the device is a plug."""
-        return self.device_type == DeviceType.Outlet
+        """Return True if the device is an outlet."""
+        return self.device_type == "outlet"
 
     @property
     def is_switch(self) -> bool:
-        """Return True if the device is a plug."""
-        return self.device_type == DeviceType.Switch
+        """Return True if the device is a switch"""
+        return self.device_type == "switch"
 
     @property
     def is_dimmer(self) -> bool:
         """Return True if the device is a Dimmer"""
-        return self.device_type == DeviceType.Dimmer
+        return self.device_type == "dimmer"
 
     def __repr__(self):
         if self._last_update is None:

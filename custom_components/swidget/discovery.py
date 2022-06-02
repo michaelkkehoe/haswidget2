@@ -5,7 +5,7 @@ import socket
 from typing import Awaitable, Callable, Dict, Optional, Type, cast
 from urllib.parse import urlparse
 
-import ssdp
+# import ssdp
 
 from .device import DeviceType, SwidgetDevice
 from .swidgetdimmer import SwidgetDimmer
@@ -18,16 +18,17 @@ SWIDGET_ST = "urn:swidget:pico:1"
 _LOGGER = logging.getLogger(__name__)
 device_addresses = set()
 
-
+"""
 class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
-    """Protocol to handle responses and requests."""
+    "Protocol to handle responses and requests."
 
     def response_received(self, response: ssdp.SSDPResponse, addr: tuple):
-        """Handle an incoming response."""
+        "Handle an incoming response."
         headers = {h[0]: h[1] for h in response.headers}
         mac_address = headers["USN"].split("-")[-1]
         ip_address = urlparse(headers["LOCATION"]).hostname
         device_addresses.add((mac_address, ip_address))
+"""
 
 class Discover:
     async def discover_devices(self):

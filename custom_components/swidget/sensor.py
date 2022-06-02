@@ -106,7 +106,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
-        name="Air Quality",
+        name="Carbon dioxide",
         emeter_attr="eco2",
         precision=1,
     ),    

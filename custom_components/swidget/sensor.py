@@ -4,7 +4,7 @@ import logging
 from dataclasses import dataclass
 from typing import cast
 
-from pyswidget.device import SwidgetDevice
+from .device import SwidgetDevice
 
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.sensor import (

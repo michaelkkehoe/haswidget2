@@ -103,6 +103,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle the initial step."""
+        errors = {}
         if user_input is not None:
             # return self.async_show_form(
             #     step_id="user", data_schema=STEP_USER_DATA_SCHEMA
@@ -110,7 +111,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if not (host := user_input[CONF_HOST]):
                 return await self.async_step_pick_device()
 
-            errors = {}
             try:
                 info = await validate_input(self.hass, user_input)
             except CannotConnect:

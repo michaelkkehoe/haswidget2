@@ -24,8 +24,8 @@ _LOGGER = logging.getLogger(__name__)
 # TODO adjust the data schema to the data that you need
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required("host"): str,
-        vol.Required("password"): str,
+        vol.Optional("host"): str,
+        vol.Optional("password"): str,
     }
 )
 

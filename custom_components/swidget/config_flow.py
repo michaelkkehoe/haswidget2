@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from . import async_discover_devices
 from .device import SwidgetDevice
 from .exceptions import SwidgetException
 import voluptuous as vol
@@ -139,8 +140,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         configured_devices = {
             entry.unique_id for entry in self._async_current_entries()
         }
-        # self._discovered_devices = await async_discover_devices(self.hass)
-        self._discovered_devices = []
+        self._discovered_devices = await async_discover_devices(self.hass)
         devices_name = {
             formatted_mac: f"{device.alias} {device.model} ({device.host}) {formatted_mac}"
             for formatted_mac, device in self._discovered_devices.items()

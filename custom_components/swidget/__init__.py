@@ -47,15 +47,15 @@ DISCOVERY_INTERVAL = timedelta(minutes=15)
 #             )
 #         )
 
-# async def async_discover_devices(hass: HomeAssistant) -> dict[str, SwidgetDevice]:
-#     """Force discover Swidget devices using """
-#     broadcast_addresses = await network.async_get_ipv4_broadcast_addresses(hass)
-#     tasks = [Discover.discover(target=str(address)) for address in broadcast_addresses]
-#     discovered_devices: dict[str, SwidgetDevice] = {}
-#     for device_list in await asyncio.gather(*tasks):
-#         for device in device_list.values():
-#             discovered_devices[dr.format_mac(device.mac)] = device
-#     return discovered_devices
+async def async_discover_devices(hass: HomeAssistant) -> dict[str, SwidgetDevice]:
+    """Force discover Swidget devices using """
+    # broadcast_addresses = await network.async_get_ipv4_broadcast_addresses(hass)
+    # tasks = [Discover.discover(target=str(address)) for address in broadcast_addresses]
+    discovered_devices: dict[str, SwidgetDevice] = {}
+    # for device_list in await asyncio.gather(*tasks):
+    #     for device in device_list.values():
+    #         discovered_devices[dr.format_mac(device.mac)] = device
+    return discovered_devices
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the Swidget component."""

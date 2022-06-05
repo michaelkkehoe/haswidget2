@@ -68,12 +68,12 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     # InvalidAuth
 
     # Return info that you want to store in the config entry.
-    try:
-        d = SwidgetDevice(data['host'], data['password'], False)
-        d.update()
-        return {"title": f"{d.friendly_name}"}
-    except:
-        raise CannotConnect
+    # try:
+    d = SwidgetDevice(data['host'], data['password'], False)
+    d.update()
+    return {"title": f"{d.friendly_name}"}
+    # except:
+    #     raise CannotConnect
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Swidget."""

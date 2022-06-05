@@ -78,7 +78,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             discovery_info.ip, discovery_info.macaddress
         )
 
- 
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle discovery via SSDP."""
         discovered_ip = urlparse(discovery_info.ssdp_headers["location"]).hostname
@@ -107,7 +106,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         except SwidgetException:
             return self.async_abort(reason="cannot_connect")
         # return await self.async_step_discovery_confirm()
-   
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:

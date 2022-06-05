@@ -44,6 +44,7 @@ class SwidgetDevice:
             "insert": SwidgetAssembly(summary["insert"]),
         }
         self.device_type = self.assemblies['host'].type
+        self.insert_type = self.assemblies['insert'].type
         self.id = self.assemblies['host'].id
         self._last_update = int(time.time())
 
@@ -81,6 +82,10 @@ class SwidgetDevice:
         self.assemblies[assembly].components[component].functions[function] = function_value  # fmt: skip
 
     async def ping(self):
+        """Ping the device to ensure it's devices
+
+        :raises SwidgetException: Raise the exception if there we are unable to connect to the Swidget device
+        """
         try:
             async with self._session.get(
                 url=f"https://{self.ip_address}/ping",
@@ -91,6 +96,10 @@ class SwidgetDevice:
             raise SwidgetException
 
     async def blink(self):
+        """Make the device LED blink
+
+        :raises SwidgetException: Raise the exception if there we are unable to connect to the Swidget device
+        """
         try:
             async with self._session.get(
                 url=f"https://{self.ip_address}/blink?x-user-key=dqMMBX9deuwtkkp784ewTjqo76IYfThV",
@@ -99,7 +108,7 @@ class SwidgetDevice:
                 return response.text
         except:
             raise SwidgetException
-            
+
     async def turn_on(self):
         """Turn the device on."""
         await self.send_command(
@@ -127,7 +136,7 @@ class SwidgetDevice:
             "model": self.model
         }
 
-    def get_child_comsumption(self, plug_id=0):
+    def get_child_consumption(self, plug_id=0):
         """Get the power consumption of a plug in watts."""
         if plug_id == "all":
             return_dict = {}
@@ -147,11 +156,16 @@ class SwidgetDevice:
 
     @property
     def realtime_values(self):
+        """Get a dict of realtime value attributes from the insert and host
+
+        :return: A dictionary of insert sensor values and power consumption values
+        :rtype: dict
+        """
         return_dict = {}
         for feature in self.features:
             _LOGGER.error(feature)
             return_dict.update(self.get_function_values(feature))
-        power_values = self.get_child_comsumption("all")
+        power_values = self.get_child_consumption("all")
         return_dict.update(power_values)
         return return_dict
 
@@ -195,8 +209,13 @@ class SwidgetDevice:
 
     @property
     def is_dimmer(self) -> bool:
-        """Return True if the device is a Dimmer"""
+        """Return True if the device is a dimmer"""
         return self.device_type == "dimmer"
+
+    @property
+    def friendly_name(self) -> str:
+        """Return a friendly description of the device"""
+        return f"Swidget {self.device_type} w/{self.insert_type} insert"
 
     def __repr__(self):
         if self._last_update is None:

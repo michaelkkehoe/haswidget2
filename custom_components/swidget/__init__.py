@@ -40,15 +40,11 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Swidget from a config entry."""
-    # TODO Store an API object for your platforms to access
-    # hass.data[DOMAIN][entry.entry_id] = MyApi(...)
-    _LOGGER.error(entry.data)
-    print(entry.data)
     try:
         device: SwidgetDevice = await Discover.discover_single(entry.data['host'], entry.data['password'], False)
     except SwidgetException as ex:
         raise ConfigEntryNotReady from ex
-        
+
     hass.data[DOMAIN][entry.entry_id] = SwidgetDataUpdateCoordinator(hass, device)
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 

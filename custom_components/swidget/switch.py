@@ -35,11 +35,11 @@ async def async_setup_entry(
 
 
 class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
-    """Representation of a TPLink Smart Plug switch."""
+    """Representation of a swidget switch."""
 
     def __init__(
         self,
-        device: SmartDevice,
+        device: SwidgetDevice,
         coordinator: SwidgetDataUpdateCoordinator,
     ) -> None:
         """Initialize the switch."""

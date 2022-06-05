@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 
-# from device import SwidgetDevice
+from .device import SwidgetDevice
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -26,10 +26,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Elgato button based on a config entry."""
-    # data: HomeAssistantSwidgetData = hass.data[DOMAIN][entry.entry_id]
-    #async_add_entities(
-    #    [SwidgetIdentifyButton(data.device, device.info, entry.data.get(CONF_MAC))]
-    #)
+
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     async_add_entities(
@@ -38,11 +35,11 @@ async def async_setup_entry(
 
 
 class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
-    """Defines an Elgato identify button."""
+    """Defines an Swidget identify button."""
 
     def __init__(
         self,
-        device: SwidgetDimmer,
+        device: Swidgetevice,
         coordinator: SwidgetDataUpdateCoordinator,
     ) -> None:
         """Initialize the button entity."""
@@ -56,8 +53,8 @@ class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
         self._attr_unique_id = f"{device.id}_{self.entity_description.key}"
 
     async def async_press(self) -> None:
-        """Identify the light, will make it blink."""
+        """Identify the device by making it blink."""
         try:
             await self.device.blink()
         except SwidgetException:
-            _LOGGER.exception("An error occurred while identifying the Elgato Light")
+            _LOGGER.exception("An error occurred while identifying the Swidget device")

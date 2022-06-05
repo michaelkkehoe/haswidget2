@@ -6,7 +6,7 @@ import logging
 from typing import Any, Final, cast
 
 from .swidgetdimmer import SwidgetDimmer
-import voluptuous as vol
+import voluptuvoous as vol
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
@@ -80,7 +80,7 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
         modes: set[ColorMode | str] = set()
         modes.add(ColorMode.BRIGHTNESS)
         return modes
- 
+
     @property
     def color_mode(self) -> ColorMode:
         """Return the active color mode."""

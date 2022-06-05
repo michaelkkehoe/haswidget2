@@ -24,13 +24,9 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
         hass: HomeAssistant,
         device: SwidgetDevice,
     ) -> None:
-        """Initialize DataUpdateCoordinator to gather data for specific SmartPlug."""
+        """Initialize DataUpdateCoordinator to gather data for specific device"""
         self.device = device
         update_interval = timedelta(seconds=1)
-        print(device)
-        print(device.__dict__)
-        _LOGGER.error(device)
-        _LOGGER.error(device.__dict__)
         super().__init__(
             hass,
             _LOGGER,
@@ -48,7 +44,6 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
         # If the children do get updated this is ok as this is an
         # optimization to reduce the number of requests on the device
         # when we do not need it.
-        self.update_children = False
         await self.async_request_refresh()
 
     async def _async_update_data(self) -> None:

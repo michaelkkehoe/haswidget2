@@ -26,10 +26,6 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
 
 from .const import (
     DOMAIN,
@@ -109,7 +105,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         name="Carbon dioxide",
         emeter_attr="eco2",
         precision=1,
-    ),    
+    ),
     SwidgetSensorEntityDescription(
         key="Volatile Organic Compounds",
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_BILLION,
@@ -118,7 +114,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         name="Volatile Organic Compounds",
         emeter_attr="tvoc",
         precision=1,
-    ),   
+    ),
     SwidgetSensorEntityDescription(
         key="Motion",
         device_class=BinarySensorDeviceClass.MOTION,
@@ -126,7 +122,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         name="Motion",
         emeter_attr="occupied",
         precision=0,
-    ),    
+    ),
 )
 
 def async_emeter_from_device(
@@ -169,7 +165,7 @@ async def async_setup_entry(
 
 
 class SwidgetSensor(CoordinatedSwidgetEntity, SensorEntity):
-    """Representation of a TPLink Smart Plug energy sensor."""
+    """Representation of a Swidget sensor"""
 
     entity_description: SwidgetSensorEntityDescription
 

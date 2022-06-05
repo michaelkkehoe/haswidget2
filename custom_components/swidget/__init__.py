@@ -6,7 +6,7 @@ import logging
 
 from .device import SwidgetDevice
 from .exceptions import SwidgetException
-from .discovery import Discover
+from .discovery import discover_devices, discover_single
 
 from homeassistant import config_entries
 from homeassistant.config_entries import ConfigEntry
@@ -51,10 +51,10 @@ async def async_discover_devices(hass: HomeAssistant) -> dict[str, SwidgetDevice
     """Force discover Swidget devices using """
     # broadcast_addresses = await network.async_get_ipv4_broadcast_addresses(hass)
     # tasks = [Discover.discover(target=str(address)) for address in broadcast_addresses]
-    discovered_devices: dict[str, SwidgetDevice] = Discover.discover_devices()
+    discovered_devices: dict[str, SwidgetDevice] = discover_devices()
     for device in discovered_devices:
         discovered_devices[dr.format_mac(device.mac)] = device
-    log.error(discovered_devices)
+    _LOGGER.error(discovered_devices)
     return discovered_devices
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -76,7 +76,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Swidget from a config entry."""
     try:
-        device: SwidgetDevice = await Discover.discover_single(entry.data['host'], entry.data['password'], False)
+        device: SwidgetDevice = await discover_single(entry.data['host'], entry.data['password'], False)
     except SwidgetException as ex:
         raise ConfigEntryNotReady from ex
 

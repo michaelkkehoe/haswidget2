@@ -29,53 +29,51 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
         ip_address = urlparse(headers["LOCATION"]).hostname
         device_addresses.add((mac_address, ip_address))
 
-class Discover:
-    """_summary_
+
+async def discover_devices():
+    loop = asyncio.get_event_loop()
+    transport, protocol = await loop.create_datagram_endpoint(
+        SwidgetProtocol, family=socket.AF_INET
+    )
+
+    # Send out an M-SEARCH request, requesting Swidget service types.
+    search_request = ssdp.SSDPRequest(
+        "M-SEARCH",
+        headers={
+            "HOST": "239.255.255.250:1900",
+            "MAN": '"ssdp:discover"',
+            "MX": RESPONSE_SEC,
+            "ST": SWIDGET_ST,
+        },
+    )
+    search_request.sendto(transport, (SwidgetProtocol.MULTICAST_ADDRESS, 1900))
+    await asyncio.sleep(RESPONSE_SEC + 0.5)
+    return device_addresses
+
+@staticmethod
+async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
+    """Discover a single device by the given IP address.
+
+    :param host: Hostname of device to query
+    :rtype: SwidgetDevice
+    :return: Object for querying/controlling found device.
     """
-    async def discover_devices(self):
-        loop = asyncio.get_event_loop()
-        transport, protocol = await loop.create_datagram_endpoint(
-            SwidgetProtocol, family=socket.AF_INET
-        )
+    swidget_device = SwidgetDevice(host, password, ssl)
+    await swidget_device.get_summary()
+    device_type = swidget_device.device_type
+    device_class = Discover._get_device_class(device_type)
+    dev = device_class(host, password, False)
+    await dev.update()
+    return dev
 
-        # Send out an M-SEARCH request, requesting Swidget service types.
-        search_request = ssdp.SSDPRequest(
-            "M-SEARCH",
-            headers={
-                "HOST": "239.255.255.250:1900",
-                "MAN": '"ssdp:discover"',
-                "MX": RESPONSE_SEC,
-                "ST": SWIDGET_ST,
-            },
-        )
-        search_request.sendto(transport, (SwidgetProtocol.MULTICAST_ADDRESS, 1900))
-        await asyncio.sleep(RESPONSE_SEC + 0.5)
-        return device_addresses
-
-    @staticmethod
-    async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
-        """Discover a single device by the given IP address.
-
-        :param host: Hostname of device to query
-        :rtype: SwidgetDevice
-        :return: Object for querying/controlling found device.
-        """
-        swidget_device = SwidgetDevice(host, password, ssl)
-        await swidget_device.get_summary()
-        device_type = swidget_device.device_type
-        device_class = Discover._get_device_class(device_type)
-        dev = device_class(host, password, False)
-        await dev.update()
-        return dev
-
-    @staticmethod
-    def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
-        """Find SmartDevice subclass for device described by passed data."""
-        # TODO: FIX THIS
-        if device_type == "outlet":
-            return SwidgetOutlet
-        elif device_type == "switch":
-            return SwidgetSwitch
-        elif device_type == "dimmer":
-            return SwidgetDimmer
-        raise SwidgetException("Unknown device type: %s" % device_type)
+@staticmethod
+def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
+    """Find SmartDevice subclass for device described by passed data."""
+    # TODO: FIX THIS
+    if device_type == "outlet":
+        return SwidgetOutlet
+    elif device_type == "switch":
+        return SwidgetSwitch
+    elif device_type == "dimmer":
+        return SwidgetDimmer
+    raise SwidgetException("Unknown device type: %s" % device_type)

@@ -18,7 +18,7 @@ SWIDGET_ST = "urn:swidget:pico:1"
 _LOGGER = logging.getLogger(__name__)
 device_addresses = set()
 
-"""
+
 class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
     "Protocol to handle responses and requests."
 
@@ -28,7 +28,6 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
         mac_address = headers["USN"].split("-")[-1]
         ip_address = urlparse(headers["LOCATION"]).hostname
         device_addresses.add((mac_address, ip_address))
-"""
 
 class Discover:
     """_summary_

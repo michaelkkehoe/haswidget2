@@ -152,7 +152,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="no_devices_found")
         return self.async_show_form(
             step_id="pick_device",
-            data_schema=vol.Schema({vol.Required(CONF_DEVICE): vol.In(devices_name), 
+            data_schema=vol.Schema({vol.Required(CONF_DEVICE): vol.In(devices_name),
                         vol.Required("password"): str}),
         )
 

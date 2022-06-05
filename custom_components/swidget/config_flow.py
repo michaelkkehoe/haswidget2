@@ -80,13 +80,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle discovery via SSDP."""
-        discovered_ip = urlparse(discovery_info.ssdp_headers["location"]).hostname
-        discovered_mac = format_mac(discovery_info.upnp[ssdp.ATTR_UPNP_SERIAL])
-        print(discovered_ip)
-        print(discovered_mac)
-        return await self._async_handle_discovery(
-            discovered_ip, discovered_mac
-        )
+        _LOGGER.error("Swidget device found via SSDP: %s", discovery_info)
+        # discovered_ip = urlparse(discovery_info.ssdp_headers["location"]).hostname
+        # discovered_mac = format_mac(discovery_info.upnp[ssdp.ATTR_UPNP_SERIAL])
+        # print(discovered_ip)
+        # print(discovered_mac)
+        # return await self._async_handle_discovery(
+        #     discovered_ip, discovered_mac
+        # )
 
     async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
         """Handle any discovery."""

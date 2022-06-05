@@ -51,7 +51,7 @@ async def async_discover_devices(hass: HomeAssistant) -> dict[str, SwidgetDevice
     """Force discover Swidget devices using """
     # broadcast_addresses = await network.async_get_ipv4_broadcast_addresses(hass)
     # tasks = [Discover.discover(target=str(address)) for address in broadcast_addresses]
-    discovered_devices: dict[str, SwidgetDevice] = discover_devices()
+    discovered_devices: dict[str, SwidgetDevice] = await discover_devices()
     for device in discovered_devices:
         discovered_devices[dr.format_mac(device.mac)] = device
     _LOGGER.error(discovered_devices)

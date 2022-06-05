@@ -5,7 +5,7 @@ import socket
 from typing import Awaitable, Callable, Dict, Optional, Type, cast
 from urllib.parse import urlparse
 
-# import ssdp
+import ssdp
 
 from .device import DeviceType, SwidgetDevice
 from .swidgetdimmer import SwidgetDimmer

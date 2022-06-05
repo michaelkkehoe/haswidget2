@@ -49,31 +49,13 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
-    # TODO validate the data can be used to set up a connection.
-
-    # If your PyPI package is not built with async, pass your methods
-    # to the executor:
-    # await hass.async_add_executor_job(
-    #     your_validate_func, data["password"]
-    # )
-
-    hub = PlaceholderHub(data["host"])
-
-    if not await hub.authenticate(data["password"]):
-        raise InvalidAuth
-
-    # If you cannot connect:
-    # throw CannotConnect
-    # If the authentication is wrong:
-    # InvalidAuth
-
     # Return info that you want to store in the config entry.
-    # try:
-    d = SwidgetDevice(data['host'], data['password'], False)
-    await d.update()
-    return {"title": f"{d.friendly_name}"}
-    # except:
-    #     raise CannotConnect
+    try:
+        d = SwidgetDevice(data['host'], data['password'], False)
+        await d.update()
+        return {"title": f"{d.friendly_name}"}
+    except:
+        raise CannotConnect
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Swidget."""
@@ -121,9 +103,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Handle the initial step."""
         if user_input is None:
-            return self.async_show_form(
-                step_id="user", data_schema=STEP_USER_DATA_SCHEMA
-            )
+            # return self.async_show_form(
+            #     step_id="user", data_schema=STEP_USER_DATA_SCHEMA
+            # )
+            return await self.async_step_pick_device()
 
         errors = {}
         try:
@@ -139,9 +122,48 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(title=info["title"], data=user_input)
 
         return self.async_show_form(
-            step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
+            step_id="user",
+            data_schema=STEP_USER_DATA_SCHEMA,
+                errors=errors
         )
 
+    async def async_step_pick_device(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle the step to pick discovered device."""
+        if user_input is not None:
+            mac = user_input[CONF_DEVICE]
+            await self.async_set_unique_id(mac, raise_on_progress=False)
+            return self._async_create_entry_from_device(self._discovered_devices[mac])
+
+        configured_devices = {
+            entry.unique_id for entry in self._async_current_entries()
+        }
+        # self._discovered_devices = await async_discover_devices(self.hass)
+        self._discovered_devices = []
+        devices_name = {
+            formatted_mac: f"{device.alias} {device.model} ({device.host}) {formatted_mac}"
+            for formatted_mac, device in self._discovered_devices.items()
+            if formatted_mac not in configured_devices
+        }
+        # Check if there is at least one device
+        if not devices_name:
+            return self.async_abort(reason="no_devices_found")
+        return self.async_show_form(
+            step_id="pick_device",
+            data_schema=vol.Schema({vol.Required(CONF_DEVICE): vol.In(devices_name), vol.Required("password"): str}),
+        )
+
+    @callback
+    def _async_create_entry_from_device(self, device: SwidgetDevice) -> FlowResult:
+        """Create a config entry from a smart device."""
+        self._abort_if_unique_id_configured(updates={CONF_HOST: device.host})
+        return self.async_create_entry(
+            title=f"{device.friendly_name}",
+            data={
+                CONF_HOST: device.host,
+            },
+        )
 
 class CannotConnect(HomeAssistantError):
     """Error to indicate we cannot connect."""

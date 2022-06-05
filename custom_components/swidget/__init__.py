@@ -1,12 +1,14 @@
 """The Swidget integration."""
 from __future__ import annotations
 
+from datetime import timedelta
 import logging
 
 from .device import SwidgetDevice
 from .exceptions import SwidgetException
 from .discovery import Discover
 
+from homeassistant import config_entries
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_HOST,
@@ -16,14 +18,47 @@ from homeassistant.const import (
     Platform
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.typing import ConfigType
 
 from .const import DOMAIN, PLATFORMS
 from .coordinator import SwidgetDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
+DISCOVERY_INTERVAL = timedelta(minutes=15)
+
+# @callback
+# def async_trigger_discovery(
+#     hass: HomeAssistant,
+#     discovered_devices: dict[str, SwidgetDevice],
+# ) -> None:
+#     """Trigger config flows for discovered devices."""
+#     for formatted_mac, device in discovered_devices.items():
+#         hass.async_create_task(
+#             hass.config_entries.flow.async_init(
+#                 DOMAIN,
+#                 context={"source": config_entries.SOURCE_INTEGRATION_DISCOVERY},
+#                 data={
+#                     CONF_NAME: device.alias,
+#                     CONF_HOST: device.host,
+#                     CONF_MAC: formatted_mac,
+#                 },
+#             )
+#         )
+
+# async def async_discover_devices(hass: HomeAssistant) -> dict[str, SwidgetDevice]:
+#     """Force discover Swidget devices using """
+#     broadcast_addresses = await network.async_get_ipv4_broadcast_addresses(hass)
+#     tasks = [Discover.discover(target=str(address)) for address in broadcast_addresses]
+#     discovered_devices: dict[str, SwidgetDevice] = {}
+#     for device_list in await asyncio.gather(*tasks):
+#         for device in device_list.values():
+#             discovered_devices[dr.format_mac(device.mac)] = device
+#     return discovered_devices
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the TP-Link component."""
+    """Set up the Swidget component."""
     hass.data[DOMAIN] = {}
 
     # if discovered_devices := await async_discover_devices(hass):
@@ -47,7 +82,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data[DOMAIN][entry.entry_id] = SwidgetDataUpdateCoordinator(hass, device)
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
-
     return True
 
 

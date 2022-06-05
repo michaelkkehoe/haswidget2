@@ -13,7 +13,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 _LOGGER = logging.getLogger(__name__)
 
-REQUEST_REFRESH_DELAY = 0.5
+REQUEST_REFRESH_DELAY = 0.35
 
 
 class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):

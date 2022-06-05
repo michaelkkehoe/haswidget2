@@ -15,7 +15,4 @@ async def async_get_config_entry_diagnostics(
 ) -> dict[str, Any]:
     """Return diagnostics for a config entry."""
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-    print(coordinator)
-    print(coordinator.device)
-    print(coordinator.device.hw_info)
     return {"device_last_response": coordinator.device.hw_info}

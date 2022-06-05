@@ -52,7 +52,6 @@ async def discover_devices():
     await asyncio.sleep(RESPONSE_SEC + 0.5)
     return device_addresses
 
-@staticmethod
 async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
     """Discover a single device by the given IP address.
 
@@ -68,7 +67,6 @@ async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
     await dev.update()
     return dev
 
-@staticmethod
 def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
     """Find SmartDevice subclass for device described by passed data."""
     # TODO: FIX THIS

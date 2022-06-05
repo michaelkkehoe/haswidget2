@@ -24,6 +24,7 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
 
     def response_received(self, response: ssdp.SSDPResponse, addr: tuple):
         "Handle an incoming response."
+        _LOGGER.error(f"SSDP response {response}")
         headers = {h[0]: h[1] for h in response.headers}
         mac_address = headers["USN"].split("-")[-1]
         ip_address = urlparse(headers["LOCATION"]).hostname
@@ -61,7 +62,7 @@ async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
     swidget_device = SwidgetDevice(host, password, ssl)
     await swidget_device.get_summary()
     device_type = swidget_device.device_type
-    device_class = Discover._get_device_class(device_type)
+    device_class = _get_device_class(device_type)
     dev = device_class(host, password, False)
     await dev.update()
     return dev

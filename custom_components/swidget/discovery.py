@@ -28,7 +28,8 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
         headers = {h[0]: h[1] for h in response.headers}
         mac_address = headers["USN"].split("-")[-1]
         ip_address = urlparse(headers["LOCATION"]).hostname
-        device_addresses[mac_address] = ip_address
+        if headers["ST"] == SWIDGET_ST:
+            device_addresses[mac_address] = ip_address
 
 
 async def discover_devices():

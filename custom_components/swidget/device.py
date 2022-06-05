@@ -216,8 +216,8 @@ class SwidgetDevice:
 
     def __repr__(self):
         if self._last_update is None:
-            return f"<{self._device_type} at {self.ip_address} - update() needed>"
-        return f"<{self._device_type} model {self.model} at {self.ip_address}>"
+            return f"<{self.device_type} at {self.ip_address} - update() needed>"
+        return f"<{self.device_type} model {self.model} at {self.ip_address}>"
 
 
 class SwidgetAssembly:

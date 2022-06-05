@@ -141,7 +141,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         configured_devices = {
             entry.unique_id for entry in self._async_current_entries()
         }
+        _LOGGER.error(f"Configured Devices: {self._async_current_entries()}")
         self._discovered_devices = await async_discover_devices(self.hass)
+        _LOGGER.error(f"Discovered Devices: {self._discovered_devices}")
         devices_name = {
             formatted_mac: f"{device.alias} {device.model} ({device.host}) {formatted_mac}"
             for formatted_mac, device in self._discovered_devices.items()

@@ -6,7 +6,7 @@ import logging
 from typing import Any, Final, cast
 
 from .swidgetdimmer import SwidgetDimmer
-import voluptuvoous as vol
+import voluptuvous as vol
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,

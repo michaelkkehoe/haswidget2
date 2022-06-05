@@ -74,6 +74,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
     async def async_step_dhcp(self, discovery_info: dhcp.DhcpServiceInfo) -> FlowResult:
         """Handle discovery via dhcp."""
+        _LOGGER.error("Swidget device found via DHCP: %s", discovery_info)
         return await self._async_handle_discovery(
             discovery_info.ip, discovery_info.macaddress
         )

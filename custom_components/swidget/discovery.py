@@ -16,7 +16,7 @@ from .exceptions import SwidgetException
 RESPONSE_SEC = 2
 SWIDGET_ST = "urn:swidget:pico:1"
 _LOGGER = logging.getLogger(__name__)
-device_addresses = set()
+device_addresses = dict()
 
 
 class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
@@ -27,7 +27,7 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
         headers = {h[0]: h[1] for h in response.headers}
         mac_address = headers["USN"].split("-")[-1]
         ip_address = urlparse(headers["LOCATION"]).hostname
-        device_addresses.add((mac_address, ip_address))
+        device_addresses[mac_address] = ip_address
 
 
 async def discover_devices():

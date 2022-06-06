@@ -4,12 +4,14 @@ from .device import (
 )
 from .exceptions import SwidgetException
 
+import logging
 
+log = logging.getLogger(__name__)
 class SwidgetDimmer(SwidgetDevice):
 
     def __init__(self, host,  secret_key: str, ssl: bool) -> None:
         super().__init__(host=host, secret_key=secret_key, ssl=ssl)
-        self._device_type = DeviceType.Dimmer
+        self._device_type = "dimmer"
 
     @property  # type: ignore
     def brightness(self) -> int:
@@ -36,6 +38,8 @@ class SwidgetDimmer(SwidgetDevice):
     @property  # type: ignore
     def is_on(self) -> bool:
         """Return whether device is on."""
+        log.error(self.assemblies['host'])
+        log.error(self.assemblies['host'].components["0"])
         dimmer_state = self.assemblies['host'].components["0"].functions['toggle']["state"]
         if dimmer_state == "on":
             return True

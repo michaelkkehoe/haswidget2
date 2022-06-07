@@ -76,9 +76,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         # discovered_mac = format_mac(discovery_info.upnp[ssdp.ATTR_UPNP_SERIAL])
         # print(discovered_ip)
         # print(discovered_mac)
-        # return await self._async_handle_discovery(
-        #     discovered_ip, discovered_mac
-        # )
+        return await self._async_handle_discovery(
+            discovered_ip, discovered_mac
+        )
 
     async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
         """Handle any discovery."""
@@ -147,9 +147,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         for i in self._async_current_entries():
             _LOGGER.error(f"Configured Device: {i.__dict__}")
         devices_name = {
-            formatted_mac: f"{device.alias} {device.model} ({device.host}) {formatted_mac}"
-            for formatted_mac, device in self._discovered_devices.items()
-            if formatted_mac not in configured_devices
+            mac: f"{mac}"
+            for mac, device in self._discovered_devices.items()
+            if mac not in configured_devices
         }
         # Check if there is at least one device
         if not devices_name:

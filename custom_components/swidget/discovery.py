@@ -13,7 +13,7 @@ from .swidgetoutlet import SwidgetOutlet
 from .swidgetswitch import SwidgetSwitch
 from .exceptions import SwidgetException
 
-RESPONSE_SEC = 2
+RESPONSE_SEC = 5
 SWIDGET_ST = "urn:swidget:pico:1"
 _LOGGER = logging.getLogger(__name__)
 device_addresses = dict()

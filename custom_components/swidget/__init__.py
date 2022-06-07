@@ -19,6 +19,7 @@ from homeassistant.const import (
 from homeassistant.core import callback, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType
 
 from .const import DOMAIN, PLATFORMS

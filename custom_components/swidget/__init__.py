@@ -33,13 +33,13 @@ def async_trigger_discovery(
     discovered_devices: dict[str, SwidgetDevice],
 ) -> None:
     """Trigger config flows for discovered devices."""
-    for mac, device in discovered_devices.items():
+    for mac, ip_address in discovered_devices.items():
         hass.async_create_task(
             hass.config_entries.flow.async_init(
                 DOMAIN,
                 context={"source": config_entries.SOURCE_INTEGRATION_DISCOVERY},
                 data={
-                    CONF_HOST: device.host,
+                    CONF_HOST: ip_address,
                     CONF_MAC: mac,
                 },
             )

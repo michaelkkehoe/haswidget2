@@ -121,6 +121,18 @@ class SwidgetDevice:
             assembly="host", component="0", function="toggle", command={"state": "off"}
         )
 
+    async def turn_on_usb_insert(self):
+        """Turn the USB insert on."""
+        await self.send_command(
+            assembly="insert", component="usb", function="toggle", command={"state": "on"}
+        )
+
+    async def turn_off_usb_insert(self):
+        """Turn the USB insert off."""
+        await self.send_command(
+            assembly="insert", component="usb", function="toggle", command={"state": "off"}
+        )
+
     @property
     def hw_info(self) -> Dict:
         """

@@ -31,6 +31,10 @@ async def async_setup_entry(
         async_add_entities(
             [SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator)]
         )
+    if coordinator.device.insert_type == "USB":
+        async_add_entities(
+            [SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator)]
+        )
 
 
 
@@ -54,3 +58,24 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the switch off."""
         await self.device.turn_off()
+
+class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
+    """Representation of a swidget sUSB witch."""
+
+    def __init__(
+        self,
+        device: SwidgetDevice,
+        coordinator: SwidgetDataUpdateCoordinator,
+    ) -> None:
+        """Initialize the switch."""
+        super().__init__(device, coordinator)
+
+    @async_refresh_after
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the switch on."""
+        await self.device.turn_on_usb_insert()
+
+    @async_refresh_after
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the switch off."""
+        await self.device.turn_off_usb_insert()

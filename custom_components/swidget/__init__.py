@@ -13,7 +13,6 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_HOST,
     CONF_MAC,
-    CONF_NAME,
     EVENT_HOMEASSISTANT_STARTED,
     Platform
 )
@@ -28,24 +27,23 @@ from .coordinator import SwidgetDataUpdateCoordinator
 _LOGGER = logging.getLogger(__name__)
 DISCOVERY_INTERVAL = timedelta(minutes=15)
 
-# @callback
-# def async_trigger_discovery(
-#     hass: HomeAssistant,
-#     discovered_devices: dict[str, SwidgetDevice],
-# ) -> None:
-#     """Trigger config flows for discovered devices."""
-#     for formatted_mac, device in discovered_devices.items():
-#         hass.async_create_task(
-#             hass.config_entries.flow.async_init(
-#                 DOMAIN,
-#                 context={"source": config_entries.SOURCE_INTEGRATION_DISCOVERY},
-#                 data={
-#                     CONF_NAME: device.alias,
-#                     CONF_HOST: device.host,
-#                     CONF_MAC: formatted_mac,
-#                 },
-#             )
-#         )
+@callback
+def async_trigger_discovery(
+    hass: HomeAssistant,
+    discovered_devices: dict[str, SwidgetDevice],
+) -> None:
+    """Trigger config flows for discovered devices."""
+    for mac, device in discovered_devices.items():
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(
+                DOMAIN,
+                context={"source": config_entries.SOURCE_INTEGRATION_DISCOVERY},
+                data={
+                    CONF_HOST: device.host,
+                    CONF_MAC: mac,
+                },
+            )
+        )
 
 async def async_discover_devices(hass: HomeAssistant) -> dict[str, SwidgetDevice]:
     """Force discover Swidget devices using """
@@ -61,15 +59,15 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the Swidget component."""
     hass.data[DOMAIN] = {}
 
-    # if discovered_devices := await async_discover_devices(hass):
-    #    async_trigger_discovery(hass, discovered_devices)
+    if discovered_devices := await async_discover_devices(hass):
+        async_trigger_discovery(hass, discovered_devices)
 
-    # async def _async_discovery(*_: Any) -> None:
-    #    if discovered := await async_discover_devices(hass):
-    #        async_trigger_discovery(hass, discovered)
+    async def _async_discovery(*_: Any) -> None:
+        if discovered := await async_discover_devices(hass):
+            async_trigger_discovery(hass, discovered)
 
-    # hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, _async_discovery)
-    # async_track_time_interval(hass, _async_discovery, DISCOVERY_INTERVAL)
+    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, _async_discovery)
+    async_track_time_interval(hass, _async_discovery, DISCOVERY_INTERVAL)
     return True
 
 

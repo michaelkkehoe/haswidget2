@@ -106,6 +106,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_abort(reason="already_in_progress")
 
         self._discovered_device = SwidgetDiscoveredDevice(mac, host)
+        await self.async_set_unique_id(
+            dr.format_mac(mac), raise_on_progress=True
+        )
         _LOGGER.error("SWIDGET: Moving to discovery_confirm()")
         return await self.async_step_discovery_confirm()
 

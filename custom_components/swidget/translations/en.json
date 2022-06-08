@@ -8,13 +8,13 @@
         "error": {
             "cannot_connect": "Failed to connect"
         },
-        "flow_title": "{name} {model} ({host})",
+        "flow_title": "{name} ({host})",
         "step": {
             "confirm": {
                 "description": "Do you want to setup Swidget devices?"
             },
             "discovery_confirm": {
-                "description": "Do you want to setup {name} {model} ({host})?"
+                "description": "Do you want to setup {name} ({host})?"
             },
             "pick_device": {
                 "data": {

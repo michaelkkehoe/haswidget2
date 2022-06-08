@@ -14,7 +14,10 @@
                 "description": "Do you want to setup Swidget devices?"
             },
             "discovery_confirm": {
-                "description": "Do you want to setup {name} ({host})?"
+                "description": "Do you want to setup {name} ({host})?",
+                "data": {
+                    "password": "Password"
+                },
             },
             "pick_device": {
                 "data": {

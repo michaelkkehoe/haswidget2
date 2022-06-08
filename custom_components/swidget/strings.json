@@ -15,7 +15,8 @@
         }
       },
       "discovery_confirm": {
-        "description": "Do you want to setup {name} ({host})?"
+        "description": "Do you want to setup {name} ({host})?",
+        "password": "[%key:common::config_flow::data::password%]"
       }
     },
     "error": {

@@ -128,7 +128,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         }
         self.context["title_placeholders"] = placeholders
         return self.async_show_form(
-            step_id="discovery_confirm", description_placeholders=placeholders
+            step_id="discovery_confirm",
+            data_schema=vol.Schema({vol.Required("password"): str}),
+            description_placeholders=placeholders
         )
 
     async def async_step_user(

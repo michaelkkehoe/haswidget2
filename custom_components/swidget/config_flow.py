@@ -3,7 +3,10 @@ from __future__ import annotations
 
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
+from custom_components.swidget.discovery import SwidgetDiscoveredDevice
+from homeassistant.helpers.device_registry import format_mac
 from . import async_discover_devices
 from .device import SwidgetDevice
 from .exceptions import SwidgetException
@@ -61,6 +64,11 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Swidget."""
 
+    def __init__(self) -> None:
+        """Initialize the config flow."""
+        self._discovered_devices: dict[str, SwidgetDiscoveredDevice] = {}
+        self._discovered_device: SwidgetDiscoveredDevice | None = None
+
     VERSION = 1
     async def async_step_dhcp(self, discovery_info: dhcp.DhcpServiceInfo) -> FlowResult:
         """Handle discovery via dhcp."""
@@ -72,10 +80,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Handle discovery via SSDP."""
         _LOGGER.error("Swidget device found via SSDP: %s", discovery_info)
-        # discovered_ip = urlparse(discovery_info.ssdp_headers["location"]).hostname
-        # discovered_mac = format_mac(discovery_info.upnp[ssdp.ATTR_UPNP_SERIAL])
-        # print(discovered_ip)
-        # print(discovered_mac)
+        discovered_ip = urlparse(discovery_info.ssdp_headers["location"]).hostname
+        discovered_mac = format_mac(discovery_info.ssdp_headers["USN"].split("-")[-1])
         return await self._async_handle_discovery(
             discovered_ip, discovered_mac
         )
@@ -90,12 +96,27 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if progress.get("context", {}).get(CONF_HOST) == host:
                 return self.async_abort(reason="already_in_progress")
 
-        try:
-            _LOGGER.info(f"Found host: {host}")
-            self._discovered_device = (host, mac)
-        except SwidgetException:
-            return self.async_abort(reason="cannot_connect")
+        self._discovered_device = SwidgetDiscoveredDevice(mac, host)
         return await self.async_step_discovery_confirm()
+
+
+    async def async_step_discovery_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Confirm discovery."""
+        assert self._discovered_device is not None
+        if user_input is not None:
+            return self._async_create_entry_from_device(self._discovered_device)
+
+        self._set_confirm_only()
+        placeholders = {
+            "name": self._discovered_device.friendly_name,
+            "host": self._discovered_device.host,
+        }
+        self.context["title_placeholders"] = placeholders
+        return self.async_show_form(
+            step_id="discovery_confirm", description_placeholders=placeholders
+        )
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -156,31 +177,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         vol.Required("password"): str}),
         )
 
-    async def async_step_discovery_confirm(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
-        """Confirm discovery."""
-        assert self._discovered_device is not None
-        if user_input is not None:
-            return self._async_create_entry_from_device(self._discovered_device[0], self._discovered_device[1])
-
-        self._set_confirm_only()
-        placeholders = {
-            "host": self._discovered_device[0],
-        }
-        self.context["title_placeholders"] = placeholders
-        return self.async_show_form(
-            step_id="discovery_confirm", description_placeholders=placeholders
-        )
-
     @callback
-    def _async_create_entry_from_device(self, host: str, mac: str) -> FlowResult:
+    def _async_create_entry_from_device(self, device: SwidgetDiscoveredDevice) -> FlowResult:
         """Create a config entry from a smart device."""
-        self._abort_if_unique_id_configured(updates={CONF_MAC: mac})
+        self._abort_if_unique_id_configured(updates={CONF_MAC: device.mac_address})
         return self.async_create_entry(
+            title= device.friendly_name,
             data={
-                CONF_MAC: mac,
-                CONF_HOST: host
+                CONF_HOST: device.host
             },
         )
 

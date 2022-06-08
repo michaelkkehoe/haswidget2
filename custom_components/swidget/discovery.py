@@ -16,21 +16,30 @@ from .exceptions import SwidgetException
 RESPONSE_SEC = 5
 SWIDGET_ST = "urn:swidget:pico:1"
 _LOGGER = logging.getLogger(__name__)
-device_addresses = dict()
+devices = dict()
+
+
+class SwidgetDiscoveredDevice:
+    def __init__(self, mac: str, host: str, friendly_name: str = "Swidget Discovered Device"):
+        self.mac = mac
+        self.host = host
+        self.friendly_name = friendly_name
 
 
 class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
     "Protocol to handle responses and requests."
-
+    "'Swidget/1.0 outlet+AIR_QUALITY/1.4.3'"
+    "Swidget {self.device_type} w/{self.insert_type} insert"
     def response_received(self, response: ssdp.SSDPResponse, addr: tuple):
         "Handle an incoming response."
-        _LOGGER.error(f"SSDP response {response}")
         headers = {h[0]: h[1] for h in response.headers}
         mac_address = headers["USN"].split("-")[-1]
         ip_address = urlparse(headers["LOCATION"]).hostname
         if headers["ST"] == SWIDGET_ST:
-            device_addresses[mac_address] = ip_address
-
+            device_type = headers["SERVER"].split(" ")[1].split("+")[0]
+            insert_type = headers["SERVER"].split(" ")[1].split("+")[0].split("/")[0]
+            friendly_name = f"Swidget {device_type} w/{insert_type} insert"
+            devices[mac_address] = SwidgetDiscoveredDevice(mac_address, ip_address, friendly_name)
 
 async def discover_devices():
     loop = asyncio.get_event_loop()
@@ -49,8 +58,9 @@ async def discover_devices():
         },
     )
     search_request.sendto(transport, (SwidgetProtocol.MULTICAST_ADDRESS, 1900))
-    await asyncio.sleep(RESPONSE_SEC + 0.5)
-    return device_addresses
+    await asyncio.sleep(RESPONSE_SEC)
+    _LOGGER.error(f"Found the following Swidget devices from SSDP discovery: {devices}")
+    return devices
 
 async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
     """Discover a single device by the given IP address.

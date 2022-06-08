@@ -92,12 +92,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         try:
             _LOGGER.info(f"Found host: {host}")
-            # self._discovered_device = await self._async_try_connect(
-            #    host, raise_on_progress=True
-            # )
+            self._discovered_device = (host, mac)
         except SwidgetException:
             return self.async_abort(reason="cannot_connect")
-        # return await self.async_step_discovery_confirm()
+        return await self.async_step_discovery_confirm()
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -158,14 +156,31 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         vol.Required("password"): str}),
         )
 
+    async def async_step_discovery_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Confirm discovery."""
+        assert self._discovered_device is not None
+        if user_input is not None:
+            return self._async_create_entry_from_device(self._discovered_device[0], self._discovered_device[1])
+
+        self._set_confirm_only()
+        placeholders = {
+            "host": self._discovered_device[0],
+        }
+        self.context["title_placeholders"] = placeholders
+        return self.async_show_form(
+            step_id="discovery_confirm", description_placeholders=placeholders
+        )
+
     @callback
-    def _async_create_entry_from_device(self, device: SwidgetDevice) -> FlowResult:
+    def _async_create_entry_from_device(self, host: str, mac: str) -> FlowResult:
         """Create a config entry from a smart device."""
-        self._abort_if_unique_id_configured(updates={CONF_HOST: device.host})
+        self._abort_if_unique_id_configured(updates={CONF_MAC: mac})
         return self.async_create_entry(
-            title=f"{device.friendly_name}",
             data={
-                CONF_HOST: device.host,
+                CONF_MAC: mac,
+                CONF_HOST: host
             },
         )
 

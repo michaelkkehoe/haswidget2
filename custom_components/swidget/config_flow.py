@@ -11,6 +11,7 @@ from . import async_discover_devices
 from .device import SwidgetDevice
 from .exceptions import SwidgetException
 import voluptuous as vol
+from homeassistant.helpers.typing import DiscoveryInfoType
 
 
 from homeassistant import config_entries
@@ -86,6 +87,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             discovered_ip, discovered_mac
         )
 
+    async def async_step_integration_discovery(
+        self, discovery_info: DiscoveryInfoType
+    ) -> FlowResult:
+        """Handle integration discovery."""
+        return await self._async_handle_discovery(
+            discovery_info[CONF_HOST], discovery_info[CONF_MAC]
+        )
+
     async def _async_handle_discovery(self, host: str, mac: str) -> FlowResult:
         """Handle any discovery."""
         await self.async_set_unique_id(dr.format_mac(mac))
@@ -97,6 +106,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_abort(reason="already_in_progress")
 
         self._discovered_device = SwidgetDiscoveredDevice(mac, host)
+        _LOGGER.error("SWIDGET: Moving to discovery_confirm()")
         return await self.async_step_discovery_confirm()
 
 

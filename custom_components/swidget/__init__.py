@@ -43,7 +43,7 @@ def async_trigger_discovery(
                 context={"source": config_entries.SOURCE_INTEGRATION_DISCOVERY},
                 data={
                     CONF_NAME: device.friendly_name,
-                    CONF_HOST: device.ip_address,
+                    CONF_HOST: device.host,
                     CONF_MAC: device.mac_address,
                 },
             )

@@ -44,7 +44,7 @@ def async_trigger_discovery(
                 data={
                     CONF_NAME: device.friendly_name,
                     CONF_HOST: device.host,
-                    CONF_MAC: device.mac_address,
+                    CONF_MAC: device.mac,
                 },
             )
         )

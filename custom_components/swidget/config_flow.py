@@ -180,7 +180,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     @callback
     def _async_create_entry_from_device(self, device: SwidgetDiscoveredDevice) -> FlowResult:
         """Create a config entry from a smart device."""
-        self._abort_if_unique_id_configured(updates={CONF_MAC: device.mac_address})
+        self._abort_if_unique_id_configured(updates={CONF_MAC: device.mac})
         return self.async_create_entry(
             title= device.friendly_name,
             data={

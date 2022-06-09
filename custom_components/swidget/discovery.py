@@ -37,7 +37,7 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
         ip_address = urlparse(headers["LOCATION"]).hostname
         if headers["ST"] == SWIDGET_ST:
             device_type = headers["SERVER"].split(" ")[1].split("+")[0]
-            insert_type = headers["SERVER"].split(" ")[1].split("+")[0].split("/")[0]
+            insert_type = headers["SERVER"].split(" ")[1].split("+")[1].split("/")[0]
             friendly_name = f"Swidget {device_type} w/{insert_type} insert"
             devices[mac_address] = SwidgetDiscoveredDevice(mac_address, ip_address, friendly_name)
 

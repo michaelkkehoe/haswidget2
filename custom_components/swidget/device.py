@@ -145,7 +145,9 @@ class SwidgetDevice:
             "mac_address": self.mac_address,
             "type": self.device_type,
             "id": self.id,
-            "model": self.model
+            "model": self.model,
+            "insert_type": self.insert_type,
+            "features": self.features
         }
 
     def get_child_consumption(self, plug_id=0):

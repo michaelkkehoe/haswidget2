@@ -66,6 +66,7 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
             brightness = round((brightness * 100.0) / 255.0)
         await self._async_turn_on_with_brightness(brightness)
 
+    @async_refresh_after
     async def _async_turn_on_with_brightness(
         self, brightness: int | None) -> None:
         # Fallback to adjusting brightness or turning the bulb on

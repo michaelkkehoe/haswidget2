@@ -6,7 +6,6 @@ from aiohttp import ClientSession, TCPConnector
 from enum import auto, Enum
 from typing import Any, Dict, List
 
-from .entity import async_refresh_after
 from .exceptions import SwidgetException
 
 _LOGGER = logging.getLogger(__name__)
@@ -109,33 +108,6 @@ class SwidgetDevice:
                 return response.text
         except:
             raise SwidgetException
-
-    @async_refresh_after
-    async def turn_on(self):
-        """Turn the device on."""
-        await self.send_command(
-            assembly="host", component="0", function="toggle", command={"state": "on"}
-        )
-    @async_refresh_after
-    async def turn_off(self):
-        """Turn the device off."""
-        await self.send_command(
-            assembly="host", component="0", function="toggle", command={"state": "off"}
-        )
-
-    @async_refresh_after
-    async def turn_on_usb_insert(self):
-        """Turn the USB insert on."""
-        await self.send_command(
-            assembly="insert", component="usb", function="toggle", command={"state": "on"}
-        )
-
-    @async_refresh_after
-    async def turn_off_usb_insert(self):
-        """Turn the USB insert off."""
-        await self.send_command(
-            assembly="insert", component="usb", function="toggle", command={"state": "off"}
-        )
 
     @property
     def hw_info(self) -> Dict:

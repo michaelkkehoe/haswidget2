@@ -140,7 +140,7 @@ def async_emeter_from_device(
 
 
 async def async_setup_entry(
-    hass: HomeAssistant,try
+    hass: HomeAssistant,
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:

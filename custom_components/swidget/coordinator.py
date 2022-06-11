@@ -26,7 +26,7 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> None:
         """Initialize DataUpdateCoordinator to gather data for specific device"""
         self.device = device
-        update_interval = timedelta(seconds=1)
+        update_interval = timedelta(seconds=30)
         super().__init__(
             hass,
             _LOGGER,

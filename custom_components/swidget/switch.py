@@ -37,7 +37,6 @@ async def async_setup_entry(
         )
 
 
-
 class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     """Representation of a swidget switch."""
 
@@ -60,7 +59,7 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
         await self.device.turn_off()
 
 class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
-    """Representation of a swidget sUSB witch."""
+    """Representation of a swidget USB witch."""
 
     def __init__(
         self,

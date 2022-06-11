@@ -173,6 +173,8 @@ class SwidgetDevice:
         for function, data in self.assemblies['insert'].components[function].functions.items():
             if function == "occupied":
                 return_values[function] = data['state']
+            elif function == "usb":
+                pass
             else:
                 return_values[function] = data['now']
         return return_values

@@ -68,6 +68,10 @@ class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     ) -> None:
         """Initialize the switch."""
         super().__init__(device, coordinator)
+        self._attr_name = "USB"
+        self._attr_unique_id = (
+            f"{self.device}_usb"
+        )
 
     @async_refresh_after
     async def async_turn_on(self, **kwargs: Any) -> None:

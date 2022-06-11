@@ -50,6 +50,7 @@ class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
             icon="mdi:help",
             entity_category=EntityCategory.CONFIG,
         )
+        self._attr_name = "identify"
         self._attr_unique_id = f"{device.id}_{self.entity_description.key}"
 
     async def async_press(self) -> None:

@@ -5,7 +5,12 @@ from collections.abc import Sequence
 import logging
 from typing import Any, Final, cast
 
+from .swidgetdimmer import SwidgetDimmer
 from .swidgetoutlet import SwidgetOutlet
+from .swidgetswitch import SwidgetSwitch
+
+
+
 import voluptuous as vol
 
 from homeassistant.components.switch import SwitchEntity
@@ -30,6 +35,12 @@ async def async_setup_entry(
     entities = []
     if coordinator.device.is_outlet:
         entities.append(SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
+
+    if coordinator.device.is_dimmer:
+        entities.append(SwidgetPlugSwitch(cast(SwidgetDimmer, coordinator.device), coordinator))
+
+    if coordinator.device.is_switch:
+        entities.append(SwidgetPlugSwitch(cast(SwidgetSwitch, coordinator.device), coordinator))
 
     if coordinator.device.insert_type == "USB":
         entities.append(SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
@@ -58,6 +69,10 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
         """Turn the switch off."""
         await self.device.turn_off()
 
+    @property
+    def is_on(self) -> bool:
+        return self.device.is_on
+
 class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     """Representation of a swidget USB witch."""
 
@@ -82,3 +97,7 @@ class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the switch off."""
         await self.device.turn_off_usb_insert()
+
+    @property
+    def is_on(self) -> bool:
+        return self.device.usb_is_on

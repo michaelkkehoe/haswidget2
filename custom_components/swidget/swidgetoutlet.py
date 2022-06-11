@@ -40,3 +40,11 @@ class SwidgetOutlet(SwidgetDevice):
         await self.send_command(
             assembly="insert", component="usb", function="toggle", command={"state": "off"}
         )
+
+    @property  # type: ignore
+    def usb_is_on(self) -> bool:
+        """Return whether USB is on."""
+        usb_state = self.assemblies['insert'].components["usb"].functions['toggle']["state"]
+        if usb_state == "on":
+            return True
+        return False

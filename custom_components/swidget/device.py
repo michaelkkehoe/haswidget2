@@ -171,8 +171,6 @@ class SwidgetDevice:
         """Return the values of an insert function."""
         return_values = dict()
         for function, data in self.assemblies['insert'].components[function].functions.items():
-            _LOGGER.error(function)
-            _LOGGER.error(data)
             if function == "occupied":
                 return_values[function] = data['state']
             elif function == "toggle":

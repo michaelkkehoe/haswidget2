@@ -33,14 +33,9 @@ async def async_setup_entry(
 ) -> None:
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities = []
-    if coordinator.device.is_outlet:
-        entities.append(SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
 
     if coordinator.device.is_dimmer:
         entities.append(SwidgetPlugSwitch(cast(SwidgetDimmer, coordinator.device), coordinator))
-
-    if coordinator.device.is_switch:
-        entities.append(SwidgetPlugSwitch(cast(SwidgetSwitch, coordinator.device), coordinator))
 
     if coordinator.device.insert_type == "USB":
         entities.append(SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
@@ -58,6 +53,10 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     ) -> None:
         """Initialize the switch."""
         super().__init__(device, coordinator)
+        self._attr_name = "Controlled Switch"
+        self._attr_unique_id = (
+            f"{self.device}_controlled"
+        )
 
     @async_refresh_after
     async def async_turn_on(self, **kwargs: Any) -> None:
@@ -83,9 +82,9 @@ class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     ) -> None:
         """Initialize the switch."""
         super().__init__(device, coordinator)
-        self._attr_name = "USB"
+        self._attr_name = "USB Outlet"
         self._attr_unique_id = (
-            f"{self.device}_usb"
+            f"{self.device}_usb_outlet"
         )
 
     @async_refresh_after

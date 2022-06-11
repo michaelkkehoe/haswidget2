@@ -27,14 +27,14 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
+    entities = []
     if coordinator.device.is_outlet:
-        async_add_entities(
-            [SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator)]
-        )
+        entities.append(SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
+
     if coordinator.device.insert_type == "USB":
-        async_add_entities(
-            [SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator)]
-        )
+        entities.append(SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
+
+    async_add_entities(entities)
 
 
 class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):

@@ -119,10 +119,11 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Confirm discovery."""
         assert self._discovered_device is not None
         if user_input is not None:
+            _LOGGER.error(f"async_step_discovery_confirm() {user_input}")
             # TODO FIX FIX FIX
             #self._discovered_device.password = user_input.get("password")
             return self._async_create_entry_from_device(self._discovered_device)
-            return self.async_create_entry(title=info["title"], data=user_input)
+            # return self.async_create_entry(title=info["title"], data=user_input)
 
         self._set_confirm_only()
         placeholders = {

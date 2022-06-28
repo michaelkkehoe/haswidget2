@@ -47,9 +47,9 @@ class SwidgetDevice:
     async def message_callback(self, message):
         _LOGGER.error(f"Callback: {message}")
         if message["request_id"] == "summary" or message["request_id"] == "DYNAMIC_UPDATE":
-            self.process_summary(message)
+            await self.process_summary(message)
         elif message["request_id"] == "state":
-            self.process_state(message)
+            await self.process_state(message)
 
     async def get_summary(self):
         async with self._session.get(

@@ -54,9 +54,9 @@ class SwidgetWebsocket:
     def state(self, value):
         """Set the state."""
         self._state = value
-        _LOGGER.debug("Websocket %s", value)
-        self.callback(value)
-        self._error_reason = None
+        # _LOGGER.debug("Websocket %s", value)
+        # self.callback(value)
+        # self._error_reason = None
 
     @staticmethod
     def _get_uri(host, secret_key):
@@ -123,7 +123,6 @@ class SwidgetWebsocket:
                 self.state = STATE_DISCONNECTED
 
                 await asyncio.sleep(5)
-
 
     async def send_str(self, message):
         await self.ws_client.send_str(message)

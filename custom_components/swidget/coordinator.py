@@ -26,7 +26,7 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> None:
         """Initialize DataUpdateCoordinator to gather data for specific device"""
         self.device = device
-        update_interval = timedelta(seconds=60)
+        update_interval = timedelta(seconds=0.5)
         super().__init__(
             hass,
             _LOGGER,
@@ -48,6 +48,7 @@ class SwidgetDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> None:
         """Fetch all device and sensor data from api."""
+        pass
         try:
             await self.device.update()
         except SwidgetException as ex:

@@ -59,7 +59,7 @@ class SwidgetDevice:
         await self.process_summary(summary)
 
     async def process_summary(self, summary):
-        _LOGGER.error(f"Processing Summary: {summary}")
+        # _LOGGER.error(f"Processing Summary: {summary}")
         self.model = summary["model"]
         self.mac_address = summary["mac"]
         self.version = summary["version"]
@@ -71,16 +71,16 @@ class SwidgetDevice:
         self.insert_type = self.assemblies['insert'].type
         self.id = self.assemblies['host'].id
         self._last_update = int(time.time())
-        _LOGGER.error(f"Finished getting Summary: {self.__dict__}")
+        # _LOGGER.error(f"Finished getting Summary: {self.__dict__}")
 
 
     async def get_state(self):
-        _LOGGER.error(f"getting state:")
+        # _LOGGER.error(f"getting state:")
         async with self._session.get(
             url=f"https://{self.ip_address}/api/v1/state", ssl=self.ssl
         ) as response:
             state = await response.json()
-        _LOGGER.error(f"State: {state}")
+        # _LOGGER.error(f"State: {state}")
         await self.process_state(state)
 
     async def process_state(self, state):
@@ -89,10 +89,19 @@ class SwidgetDevice:
             self.rssi = state["connection"]["rssi"]
         except:
             pass
-        _LOGGER.error(f"Self.assemblies: {self.assemblies}")
+        #  _LOGGER.error(f"Self.assemblies: {self.assemblies}")
+        """
+        2022-06-28 14:53:13 ERROR (MainThread) [custom_components.swidget.swidgetclient.device] Self.assemblies: {'host': <custom_components.swidget.swidgetclient.device.SwidgetAssembly object at 0xffff862b6280>, 'insert': <custom_components.swidget.swidgetclient.device.SwidgetAssembly object at 0xffff8f0b5520>}
+        Processing state: {'request_id': 'command', 'insert': {'components': {'usb': {'toggle': {}, 'state': 'on'}}}}
+
+        """
         for assembly in self.assemblies:
+            _LOGGER.error(assembly)
             for id, component in self.assemblies[assembly].components.items():
+                _LOGGER.error(f"id:{id}   component: {component}")
+                _LOGGER.error(f"component.function: {component.functions}")
                 try:
+                    _LOGGER.error(f"Setting State: {state[assembly]['components'][id]}")
                     component.functions = state[assembly]["components"][id]
                 except:
                     pass
@@ -104,7 +113,7 @@ class SwidgetDevice:
             _LOGGER.debug("Performing the initial update to obtain sysinfo")
         await self.get_summary()
         await self.get_state()
-        _LOGGER.error("Completed Update")
+        # _LOGGER.error("Completed Update")
 
     async def send_command(
         self, assembly: str, component: str, function: str, command: dict

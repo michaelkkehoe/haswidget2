@@ -85,7 +85,10 @@ class SwidgetDevice:
 
     async def process_state(self, state):
         _LOGGER.error(f"Processing state: {state}")
-        self.rssi = state["connection"]["rssi"]
+        try:
+            self.rssi = state["connection"]["rssi"]
+        except:
+            pass
         for assembly in self.assemblies:
             for id, component in self.assemblies[assembly].components.items():
                 component.functions = state[assembly]["components"][id]

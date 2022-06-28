@@ -110,7 +110,7 @@ class SwidgetDevice:
                                "payload": data
                                })
             _LOGGER.error(data)
-            self._websocket.send_str(data)
+            await self._websocket.send_str(data)
         else:
             async with self._session.post(
                 url=f"https://{self.ip_address}/api/v1/command",

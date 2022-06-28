@@ -89,6 +89,7 @@ class SwidgetDevice:
             self.rssi = state["connection"]["rssi"]
         except:
             pass
+        _LOGGER.error(f"Self.assemblies: {self.assemblies}")
         for assembly in self.assemblies:
             for id, component in self.assemblies[assembly].components.items():
                 component.functions = state[assembly]["components"][id]

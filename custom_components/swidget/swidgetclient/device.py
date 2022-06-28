@@ -92,7 +92,10 @@ class SwidgetDevice:
         _LOGGER.error(f"Self.assemblies: {self.assemblies}")
         for assembly in self.assemblies:
             for id, component in self.assemblies[assembly].components.items():
-                component.functions = state[assembly]["components"][id]
+                try:
+                    component.functions = state[assembly]["components"][id]
+                except:
+                    pass
         self._last_update = int(time.time())
         _LOGGER.error(f"Finished getting state: {self.__dict__}")
 

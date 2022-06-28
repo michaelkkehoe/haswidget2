@@ -98,7 +98,7 @@ class SwidgetDevice:
         for assembly in self.assemblies:
             _LOGGER.error(assembly)
             for id, component in self.assemblies[assembly].components.items():
-                _LOGGER.error(f"id:{id}   component: {component}")
+                _LOGGER.error(f"id:{id}   component: {component.__dict__}")
                 _LOGGER.error(f"component.function: {component.functions}")
                 try:
                     _LOGGER.error(f"Setting State: {state[assembly]['components'][id]}")

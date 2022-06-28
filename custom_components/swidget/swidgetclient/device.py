@@ -177,7 +177,7 @@ class SwidgetDevice:
 
     async def total_consumption(self):
         """Get the total power consumption in watts."""
-        await self.get_state()
+        # await self.get_state()
         total_consumption = 0
         for id, properties in self.assemblies['host'].components.items():
             print(vars(properties))

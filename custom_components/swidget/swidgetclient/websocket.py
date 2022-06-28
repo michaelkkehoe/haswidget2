@@ -81,7 +81,7 @@ class SwidgetWebsocket:
                     if message.type == aiohttp.WSMsgType.TEXT:
                         msg = message.json()
                         _LOGGER.error(f"Message recieved: {message}")
-                        self.callback(msg)
+                        await self.callback(msg)
 
                     elif message.type == aiohttp.WSMsgType.CLOSED:
                         _LOGGER.warning("AIOHTTP websocket connection closed")

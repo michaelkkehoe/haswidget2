@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime
 import logging
+import json
 import ssl
 from time import time
 import aiohttp
@@ -67,19 +68,19 @@ class SwidgetWebsocket:
         self.state = STATE_STARTING
 
         try:
-            print(self.uri)
             headers = {'Connection': 'Upgrade'}
             async with self.session.ws_connect(self.uri, headers=headers, verify_ssl=False) as self.ws_client:
                 self.state = STATE_CONNECTED
                 self.failed_attempts = 0
+                self.send_str(json.dumps({"type": "summary", "request_id": "1"}))
+                self.send_str(json.dumps({"type": "state", "request_id": "2"}))
                 async for message in self.ws_client:
                     if self.state == STATE_STOPPED:
                         break
 
                     if message.type == aiohttp.WSMsgType.TEXT:
                         msg = message.json()
-                        msgtype = msg["request_id"]
-                        self.callback(msgtype, msg, None)
+                        self.callback(msg)
 
                     elif message.type == aiohttp.WSMsgType.CLOSED:
                         _LOGGER.warning("AIOHTTP websocket connection closed")

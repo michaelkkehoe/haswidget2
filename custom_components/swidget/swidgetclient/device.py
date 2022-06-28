@@ -118,8 +118,8 @@ class SwidgetDevice:
             ) as response:
                 state = await response.json()
 
-        function_value = state[assembly]["components"][component][function]
-        self.assemblies[assembly].components[component].functions[function] = function_value  # fmt: skip
+            function_value = state[assembly]["components"][component][function]
+            self.assemblies[assembly].components[component].functions[function] = function_value  # fmt: skip
 
     async def ping(self):
         """Ping the device to ensure it's devices

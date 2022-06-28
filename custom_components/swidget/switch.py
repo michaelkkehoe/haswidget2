@@ -34,8 +34,8 @@ async def async_setup_entry(
     coordinator: SwidgetDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities = []
 
-    if coordinator.device.is_dimmer:
-        entities.append(SwidgetPlugSwitch(cast(SwidgetDimmer, coordinator.device), coordinator))
+    # if coordinator.device.is_dimmer:
+    #     entities.append(SwidgetPlugSwitch(cast(SwidgetDimmer, coordinator.device), coordinator))
     if coordinator.device.is_outlet:
         entities.append(SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
     if coordinator.device.is_switch:

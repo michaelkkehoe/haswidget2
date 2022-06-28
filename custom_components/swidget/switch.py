@@ -36,7 +36,10 @@ async def async_setup_entry(
 
     if coordinator.device.is_dimmer:
         entities.append(SwidgetPlugSwitch(cast(SwidgetDimmer, coordinator.device), coordinator))
-
+    if coordinator.device.is_outlet:
+        entities.append(SwidgetPlugSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
+    if coordinator.device.is_switch:
+        entities.append(SwidgetPlugSwitch(cast(SwidgetSwitch, coordinator.device), coordinator))
     if coordinator.device.insert_type == "USB":
         entities.append(SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
 

@@ -109,6 +109,7 @@ class SwidgetDevice:
                                "request_id": "command",
                                "payload": data
                                })
+            _LOGGER.error(data)
             self._websocket.send_str(data)
         else:
             async with self._session.post(

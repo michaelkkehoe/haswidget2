@@ -5,7 +5,7 @@ import logging
 from typing import Any
 from urllib.parse import urlparse
 
-from custom_components.swidget.discovery import SwidgetDiscoveredDevice
+from .swidgetclient.discovery import SwidgetDiscoveredDevice
 from homeassistant.helpers.device_registry import format_mac
 from . import async_discover_devices
 from .swidgetclient.device import SwidgetDevice

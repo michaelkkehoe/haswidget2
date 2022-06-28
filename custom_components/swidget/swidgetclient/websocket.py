@@ -125,7 +125,8 @@ class SwidgetWebsocket:
                 await asyncio.sleep(5)
 
     async def send_str(self, message):
-        await self.ws_client.send_str(f"{message}")
+        _LOGGER.error(f"Sending Message: {message}")
+        await self.ws_client.send_str(f'{message}')
 
     async def listen(self):
         """Close the listening websocket."""

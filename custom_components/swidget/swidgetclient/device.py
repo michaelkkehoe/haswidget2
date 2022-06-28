@@ -102,7 +102,7 @@ class SwidgetDevice:
     async def send_command(
         self, assembly: str, component: str, function: str, command: dict
     ):
-        data = json.dumps({assembly: {"components": {component: {function: command}}}})
+        data = {assembly: {"components": {component: {function: command}}}}
 
         if self.use_websockets:
             data = json.dumps({"type": "command",
@@ -115,7 +115,7 @@ class SwidgetDevice:
             async with self._session.post(
                 url=f"https://{self.ip_address}/api/v1/command",
                 ssl=self.ssl,
-                data=data,
+                data=json.dumps(data),
             ) as response:
                 state = await response.json()
 

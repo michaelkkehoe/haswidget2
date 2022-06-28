@@ -91,6 +91,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = SwidgetDataUpdateCoordinator(hass, device)
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
     hass.loop.create_task(device._websocket.listen())
+    _LOGGER.error(" async_setup_entry returned")
     return True
 
 

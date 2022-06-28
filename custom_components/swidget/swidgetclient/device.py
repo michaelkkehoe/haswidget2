@@ -59,6 +59,7 @@ class SwidgetDevice:
         await self.process_summary(summary)
 
     async def process_summary(self, summary):
+        _LOGGER.error(f"Processing Summary: {summary}")
         self.model = summary["model"]
         self.mac_address = summary["mac"]
         self.version = summary["version"]
@@ -79,6 +80,7 @@ class SwidgetDevice:
         self.process_state(state)
 
     async def process_state(self, state):
+        _LOGGER.error(f"Processing state: {state}")
         self.rssi = state["connection"]["rssi"]
         for assembly in self.assemblies:
             for id, component in self.assemblies[assembly].components.items():

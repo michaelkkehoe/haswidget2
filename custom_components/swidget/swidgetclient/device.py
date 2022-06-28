@@ -75,10 +75,12 @@ class SwidgetDevice:
 
 
     async def get_state(self):
+        _LOGGER.error(f"getting state:")
         async with self._session.get(
             url=f"https://{self.ip_address}/api/v1/state", ssl=self.ssl
         ) as response:
             state = await response.json()
+        _LOGGER.error(f"State: {state}")
         await self.process_state(state)
 
     async def process_state(self, state):

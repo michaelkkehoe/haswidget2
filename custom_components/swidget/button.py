@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 
 from .swidgetclient.device import SwidgetDevice
+from .swidgetclient.exceptions import SwidgetException
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -14,7 +15,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .coordinator import SwidgetDataUpdateCoordinator
-from .exceptions import SwidgetException
+
 from .entity import CoordinatedSwidgetEntity, async_refresh_after
 
 _LOGGER = logging.getLogger(__name__)

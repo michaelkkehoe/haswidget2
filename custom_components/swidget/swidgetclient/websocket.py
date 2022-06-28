@@ -54,7 +54,7 @@ class SwidgetWebsocket:
         """Set the state."""
         self._state = value
         _LOGGER.debug("Websocket %s", value)
-        self.callback(SIGNAL_CONNECTION_STATE, value, self._error_reason)
+        self.callback(value)
         self._error_reason = None
 
     @staticmethod

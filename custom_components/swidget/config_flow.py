@@ -8,8 +8,8 @@ from urllib.parse import urlparse
 from custom_components.swidget.discovery import SwidgetDiscoveredDevice
 from homeassistant.helpers.device_registry import format_mac
 from . import async_discover_devices
-from .device import SwidgetDevice
-from .exceptions import SwidgetException
+from .swidgetclient.device import SwidgetDevice
+from .swidgetclient.exceptions import SwidgetException
 import voluptuous as vol
 from homeassistant.helpers.typing import DiscoveryInfoType
 

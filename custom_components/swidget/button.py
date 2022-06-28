@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 
-from .device import SwidgetDevice
+from .swidgetclient.device import SwidgetDevice
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry

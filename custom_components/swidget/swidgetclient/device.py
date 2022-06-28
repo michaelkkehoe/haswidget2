@@ -7,6 +7,7 @@ from enum import auto, Enum
 from typing import Any, Dict, List
 
 from .exceptions import SwidgetException
+from .websocket import SwidgetWebsocket
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,21 +22,42 @@ class DeviceType(Enum):
 
 
 class SwidgetDevice:
-    def __init__(self, host, secret_key, ssl):
+    def __init__(self, host, secret_key, ssl=False, use_websockets=True):
         self.ip_address = host
         self.ssl = ssl
         self.secret_key = secret_key
+        self.use_websockets = use_websockets
         headers = {"x-secret-key": self.secret_key}
         connector = TCPConnector(force_close=True)
         self._session = ClientSession(headers=headers, connector=connector)
         self._last_update = None
+        if self.use_websockets:
+            self._websocket = SwidgetWebsocket(
+                host=self.ip_address,
+                secret_key=self.secret_key,
+                callback=self.message_callback,
+                session=self._session)
+
+
+    async def stop(self):
+        """Stop the websocket."""
+        if self._websocket is not None:
+            await self._websocket.stop()
+
+    async def message_callback(self, message):
+        if message["request_id"] == "summary" or message["request_id"] == "DYNAMIC_UPDATE":
+            self.process_summary(message)
+        elif message["request_id"] == "state":
+            self.process_state(message)
 
     async def get_summary(self):
         async with self._session.get(
             url=f"https://{self.ip_address}/api/v1/summary", ssl=self.ssl
         ) as response:
             summary = await response.json()
+        self.process_summary(summary)
 
+    async def process_summary(self, summary):
         self.model = summary["model"]
         self.mac_address = summary["mac"]
         self.version = summary["version"]
@@ -53,7 +75,9 @@ class SwidgetDevice:
             url=f"https://{self.ip_address}/api/v1/state", ssl=self.ssl
         ) as response:
             state = await response.json()
+        self.process_state(state)
 
+    async def process_state(self, state):
         self.rssi = state["connection"]["rssi"]
         for assembly in self.assemblies:
             for id, component in self.assemblies[assembly].components.items():
@@ -71,12 +95,19 @@ class SwidgetDevice:
     ):
         data = json.dumps({assembly: {"components": {component: {function: command}}}})
 
-        async with self._session.post(
-            url=f"https://{self.ip_address}/api/v1/command",
-            ssl=self.ssl,
-            data=data,
-        ) as response:
-            state = await response.json()
+        if self.use_websockets:
+            data = json.dumps({"type": "command",
+                               "request_id": "command",
+                               "payload": data
+                               })
+            self._websocket.send_str(data)
+        else:
+            async with self._session.post(
+                url=f"https://{self.ip_address}/api/v1/command",
+                ssl=self.ssl,
+                data=data,
+            ) as response:
+                state = await response.json()
 
         function_value = state[assembly]["components"][component][function]
         self.assemblies[assembly].components[component].functions[function] = function_value  # fmt: skip

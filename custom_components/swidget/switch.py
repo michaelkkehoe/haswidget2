@@ -5,9 +5,9 @@ from collections.abc import Sequence
 import logging
 from typing import Any, Final, cast
 
-from .swidgetdimmer import SwidgetDimmer
-from .swidgetoutlet import SwidgetOutlet
-from .swidgetswitch import SwidgetSwitch
+from .swidgetclient.swidgetdimmer import SwidgetDimmer
+from .swidgetclient.swidgetoutlet import SwidgetOutlet
+from .swidgetclient.swidgetswitch import SwidgetSwitch
 
 
 

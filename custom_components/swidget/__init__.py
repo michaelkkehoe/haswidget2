@@ -4,12 +4,13 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 
-from .device import SwidgetDevice
-from .exceptions import SwidgetException
-from .discovery import SwidgetDiscoveredDevice, discover_devices, discover_single
+from .swidgetclient.device import SwidgetDevice
+from .swidgetclient.exceptions import SwidgetException
+from .swidgetclient.discovery import SwidgetDiscoveredDevice, discover_devices, discover_single
 
 from homeassistant import config_entries
 from homeassistant.config_entries import ConfigEntry
+
 from homeassistant.const import (
     CONF_NAME,
     CONF_HOST,
@@ -20,6 +21,7 @@ from homeassistant.const import (
 from homeassistant.core import callback, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType
 
@@ -85,8 +87,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     except SwidgetException as ex:
         raise ConfigEntryNotReady from ex
 
+    # session = async_get_clientsession(hass)
     hass.data[DOMAIN][entry.entry_id] = SwidgetDataUpdateCoordinator(hass, device)
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    hass.loop.create_task(device._websocket.listen())
     return True
 
 

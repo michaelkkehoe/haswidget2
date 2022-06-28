@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable, Coroutine
 from typing import Any, TypeVar
 
-from .device import SwidgetDevice
+from .swidgetclient.device import SwidgetDevice
 from typing_extensions import Concatenate, ParamSpec
 
 from homeassistant.helpers import device_registry as dr

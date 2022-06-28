@@ -4,8 +4,8 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 
-from .device import SwidgetDevice
-from .exceptions import SwidgetException
+from .swidgetclient.device import SwidgetDevice
+from .swidgetclient.exceptions import SwidgetException
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.debounce import Debouncer

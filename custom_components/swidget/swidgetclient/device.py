@@ -45,6 +45,7 @@ class SwidgetDevice:
             await self._websocket.stop()
 
     async def message_callback(self, message):
+        _LOGGER.error(f"Callback: {message}")
         if message["request_id"] == "summary" or message["request_id"] == "DYNAMIC_UPDATE":
             self.process_summary(message)
         elif message["request_id"] == "state":

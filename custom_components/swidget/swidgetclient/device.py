@@ -55,7 +55,7 @@ class SwidgetDevice:
             url=f"https://{self.ip_address}/api/v1/summary", ssl=self.ssl
         ) as response:
             summary = await response.json()
-        self.process_summary(summary)
+        await self.process_summary(summary)
 
     async def process_summary(self, summary):
         self.model = summary["model"]

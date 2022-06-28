@@ -71,6 +71,8 @@ class SwidgetDevice:
         self.insert_type = self.assemblies['insert'].type
         self.id = self.assemblies['host'].id
         self._last_update = int(time.time())
+        _LOGGER.error(f"{self.__dict__}")
+
 
     async def get_state(self):
         async with self._session.get(
@@ -86,12 +88,13 @@ class SwidgetDevice:
             for id, component in self.assemblies[assembly].components.items():
                 component.functions = state[assembly]["components"][id]
         self._last_update = int(time.time())
+        _LOGGER.error(f"{self.__dict__}")
 
     async def update(self):
         if self._last_update is None:
             _LOGGER.debug("Performing the initial update to obtain sysinfo")
-        await self.get_summary()
-        await self.get_state()
+        self.get_summary()
+        self.get_state()
 
     async def send_command(
         self, assembly: str, component: str, function: str, command: dict

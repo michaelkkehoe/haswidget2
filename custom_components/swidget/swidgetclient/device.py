@@ -79,7 +79,7 @@ class SwidgetDevice:
             url=f"https://{self.ip_address}/api/v1/state", ssl=self.ssl
         ) as response:
             state = await response.json()
-        self.process_state(state)
+        await self.process_state(state)
 
     async def process_state(self, state):
         _LOGGER.error(f"Processing state: {state}")

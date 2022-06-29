@@ -56,7 +56,7 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     ) -> None:
         """Initialize the switch."""
         super().__init__(device, coordinator)
-        self._attr_name = "Controlled Switch"
+        self._attr_name = "Controlled Outlet"
         self._attr_unique_id = (
             f"{self.device}_controlled"
         )

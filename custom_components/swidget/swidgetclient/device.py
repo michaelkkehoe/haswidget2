@@ -211,6 +211,7 @@ class SwidgetDevice:
         return_dict = {}
         for feature in self.features:
             return_dict.update(self.get_function_values(feature))
+        return_dict.update({'rssi': self.rssi})
         power_values = self.get_child_consumption("all")
         return_dict.update(power_values)
         return return_dict

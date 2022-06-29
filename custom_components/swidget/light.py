@@ -57,6 +57,7 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
         """Initialize the switch."""
         super().__init__(device, coordinator)
         # For backwards compat with pyHS100
+        self._attr_name = "Dimmer"
         self._attr_unique_id = device.id
 
     @async_refresh_after

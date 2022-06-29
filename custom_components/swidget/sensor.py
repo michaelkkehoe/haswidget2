@@ -21,10 +21,11 @@ from homeassistant.const import (
     PERCENTAGE,
     POWER_WATT,
     PRESSURE_HPA,
+    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     TEMP_CELSIUS,
-
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
@@ -122,6 +123,14 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         name="Motion",
         emeter_attr="occupied",
         precision=0,
+    ),
+    SwidgetSensorEntityDescription(
+        key="Motion",
+        device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+        native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+        entity_category = EntityCategory.DIAGNOSTIC,
+        name="Signal Strength",
+        emeter_attr="irssi",
     ),
 )
 

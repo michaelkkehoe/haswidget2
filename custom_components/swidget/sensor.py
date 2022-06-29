@@ -130,7 +130,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
         entity_category = EntityCategory.DIAGNOSTIC,
         name="Signal Strength",
-        emeter_attr="irssi",
+        emeter_attr="rssi",
     ),
 )
 

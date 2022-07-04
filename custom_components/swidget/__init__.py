@@ -103,8 +103,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass_data: dict[str, Any] = hass.data[DOMAIN]
     device: SwidgetDevice = hass_data[entry.entry_id].device
     _LOGGER.error(f" async_unload_entry: {device}")
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass_data.pop(entry.entry_id)
     if device.use_websockets:
         await device._websocket.close()
+    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        hass_data.pop(entry.entry_id)
     return unload_ok

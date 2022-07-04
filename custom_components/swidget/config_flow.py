@@ -121,7 +121,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             _LOGGER.error(f"async_step_discovery_confirm() {user_input}")
             _LOGGER.error(f"discovered_device {self._discovered_device}")
-            user_input['host'] = self._discovered_devices[user_input['device']].host
+            user_input['host'] = self._discovered_device.host
             info = await validate_input(self.hass, user_input)
             return self.async_create_entry(title=info["title"], data=user_input)
             # TODO FIX FIX FIX

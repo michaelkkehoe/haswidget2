@@ -17,9 +17,8 @@ from homeassistant.const import (
     CONF_HOST,
     CONF_MAC,
     EVENT_HOMEASSISTANT_STARTED,
-    CONF_PASSWORD
-    Platform
 )
+
 from homeassistant.core import callback, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr

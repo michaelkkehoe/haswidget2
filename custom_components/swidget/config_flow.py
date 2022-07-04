@@ -176,6 +176,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             # mac = user_input[CONF_DEVICE]
             # await self.async_set_unique_id(mac, raise_on_progress=False)
             # return self._async_create_entry_from_device(self._discovered_devices[mac])
+            _LOGGER.error(f"user-Input: {user_input}")
+            _LOGGER.error(f"discovered devices: {self._discovered_devices[mac]}")
             info = await validate_input(self.hass, user_input)
             return self.async_create_entry(title=info["title"], data=user_input)
 

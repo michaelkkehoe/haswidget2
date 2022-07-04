@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+from typing import Any
 import logging
 
 from .swidgetclient.device import SwidgetDevice
@@ -16,12 +17,12 @@ from homeassistant.const import (
     CONF_HOST,
     CONF_MAC,
     EVENT_HOMEASSISTANT_STARTED,
+    CONF_PASSWORD
     Platform
 )
 from homeassistant.core import callback, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType
 
@@ -97,6 +98,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
+    # if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+    #     hass.data[DOMAIN].pop(entry.entry_id)
+    # return unload_ok
+    hass_data: dict[str, Any] = hass.data[DOMAIN]
+    device: SwidgetDevice = hass_data[entry.entry_id].device
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        hass.data[DOMAIN].pop(entry.entry_id)
+        hass_data.pop(entry.entry_id)
+    if device.use_websockets:
+        await device._websocket.close()
     return unload_ok

@@ -27,9 +27,7 @@ class SwidgetDiscoveredDevice:
 
 
 class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
-    "Protocol to handle responses and requests."
-    "'Swidget/1.0 outlet+AIR_QUALITY/1.4.3'"
-    "Swidget {self.device_type} w/{self.insert_type} insert"
+    """Protocol to handle responses and requests."""
     def response_received(self, response: ssdp.SSDPResponse, addr: tuple):
         "Handle an incoming response."
         headers = {h[0]: h[1] for h in response.headers}
@@ -79,7 +77,6 @@ async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
 
 def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
     """Find SmartDevice subclass for device described by passed data."""
-    # TODO: FIX THIS
     if device_type == "outlet":
         return SwidgetOutlet
     elif device_type == "switch":

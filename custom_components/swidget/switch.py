@@ -42,7 +42,6 @@ async def async_setup_entry(
         entities.append(SwidgetPlugSwitch(cast(SwidgetSwitch, coordinator.device), coordinator))
     if coordinator.device.insert_type == "USB":
         entities.append(SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
-
     async_add_entities(entities)
 
 
@@ -58,7 +57,7 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
         super().__init__(device, coordinator)
         self._attr_name = "Controlled Outlet"
         self._attr_unique_id = (
-            f"{self.device}_controlled"
+            f"{self.device}_controlled_outlet"
         )
 
     @async_refresh_after

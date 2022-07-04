@@ -45,13 +45,14 @@ class SwidgetDevice:
             await self._websocket.stop()
 
     async def message_callback(self, message):
-        _LOGGER.error(f"Callback: {message}")
+        """Entrypoint for a websocket callback"""
         if message["request_id"] == "summary":
             await self.process_summary(message)
         elif message["request_id"] == "state" or message["request_id"] == "DYNAMIC_UPDATE" or message["request_id"] == "command":
             await self.process_state(message)
 
     async def get_summary(self):
+        """Get a summary of the device over HTTP"""
         async with self._session.get(
             url=f"https://{self.ip_address}/api/v1/summary", ssl=self.ssl
         ) as response:
@@ -59,7 +60,7 @@ class SwidgetDevice:
         await self.process_summary(summary)
 
     async def process_summary(self, summary):
-        # _LOGGER.error(f"Processing Summary: {summary}")
+        """ Process the data around the summary of the device"""
         self.model = summary["model"]
         self.mac_address = summary["mac"]
         self.version = summary["version"]
@@ -71,25 +72,23 @@ class SwidgetDevice:
         self.insert_type = self.assemblies['insert'].type
         self.id = self.assemblies['host'].id
         self._last_update = int(time.time())
-        # _LOGGER.error(f"Finished getting Summary: {self.__dict__}")
-
 
     async def get_state(self):
-        # _LOGGER.error(f"getting state:")
+        """ Get the state of the device over HTTP"""
         async with self._session.get(
             url=f"https://{self.ip_address}/api/v1/state", ssl=self.ssl
         ) as response:
             state = await response.json()
-        # _LOGGER.error(f"State: {state}")
         await self.process_state(state)
 
     async def process_state(self, state):
+        """ Process any information about the state of the device or insert"""
         _LOGGER.error(f"Processing state: {state}")
+        # State is not always in the state (during callback)
         try:
             self.rssi = state["connection"]["rssi"]
         except:
             pass
-        #  _LOGGER.error(f"Self.assemblies: {self.assemblies}")
         """
         2022-06-28 14:53:13 ERROR (MainThread) [custom_components.swidget.swidgetclient.device] Self.assemblies: {'host': <custom_components.swidget.swidgetclient.device.SwidgetAssembly object at 0xffff862b6280>, 'insert': <custom_components.swidget.swidgetclient.device.SwidgetAssembly object at 0xffff8f0b5520>}
         Processing state: {'request_id': 'command', 'insert': {'components': {'usb': {'toggle': {}, 'state': 'on'}}}}
@@ -113,11 +112,11 @@ class SwidgetDevice:
             _LOGGER.debug("Performing the initial update to obtain sysinfo")
         await self.get_summary()
         await self.get_state()
-        # _LOGGER.error("Completed Update")
 
     async def send_command(
         self, assembly: str, component: str, function: str, command: dict
     ):
+        """Send a command to the Swidget device either using a HTTP call or the existing ebsocket"""
         data = {assembly: {"components": {component: {function: command}}}}
 
         if self.use_websockets:
@@ -125,7 +124,6 @@ class SwidgetDevice:
                                "request_id": "command",
                                "payload": data
                                })
-            _LOGGER.error(data)
             await self._websocket.send_str(data)
         else:
             async with self._session.post(
@@ -180,7 +178,8 @@ class SwidgetDevice:
             "id": self.id,
             "model": self.model,
             "insert_type": self.insert_type,
-            "features": self.features
+            "features": self.features,
+            "rssi": self.rssi
         }
 
     def get_child_consumption(self, plug_id=0):
@@ -238,7 +237,7 @@ class SwidgetDevice:
         return return_values
 
     def get_sensor_value(self, function, sensor):
-        """Return the value of a sensor."""
+        """Return the value of a sensor given a function and sensor"""
         if sensor == "occupied":
             return self.assemblies['insert'].components[function].functions['occupied']['state']
         else:
@@ -269,6 +268,9 @@ class SwidgetDevice:
             return f"<{self.device_type} at {self.ip_address} - update() needed>"
         return f"<{self.device_type} model {self.model} at {self.ip_address}>"
 
+    def __del__(self):
+        if self.use_websockets:
+            self.stop()
 
 class SwidgetAssembly:
     def __init__(self, summary: dict):
@@ -283,7 +285,3 @@ class SwidgetAssembly:
 class SwidgetComponent:
     def __init__(self, functions):
         self.functions = {f: None for f in functions}
-
-
-class SwidgetException(Exception):
-    """Base exception for device errors."""

@@ -2,14 +2,10 @@ import asyncio
 from datetime import datetime
 import logging
 import json
-import ssl
-from time import time
+
 import aiohttp
 
 _LOGGER = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
-
-SIGNAL_CONNECTION_STATE = "plexwebsocket_state"
 
 ERROR_AUTH_FAILURE = "Authorization failure"
 ERROR_TOO_MANY_RETRIES = "Too many retries"
@@ -54,9 +50,6 @@ class SwidgetWebsocket:
     def state(self, value):
         """Set the state."""
         self._state = value
-        # _LOGGER.debug("Websocket %s", value)
-        # self.callback(value)
-        # self._error_reason = None
 
     @staticmethod
     def _get_uri(host, secret_key):
@@ -80,7 +73,6 @@ class SwidgetWebsocket:
 
                     if message.type == aiohttp.WSMsgType.TEXT:
                         msg = message.json()
-                        _LOGGER.error(f"Message recieved: {message}")
                         await self.callback(msg)
 
                     elif message.type == aiohttp.WSMsgType.CLOSED:

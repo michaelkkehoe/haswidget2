@@ -194,7 +194,7 @@ class SwidgetSensor(CoordinatedSwidgetEntity, SensorEntity):
 
         Overridden to include the description.
         """
-        return f"{self.entity_description.name}"
+        return f"{self.device.friendly_name} {self.entity_description.name}"
 
     @property
     def native_value(self) -> float | None:

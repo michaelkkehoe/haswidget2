@@ -52,7 +52,7 @@ class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
             entity_category=EntityCategory.CONFIG,
         )
         self._attr_name = "Blink"
-        self._attr_unique_id = f"{device.id}_{self.entity_description.key}"
+        self._attr_unique_id = f"{device}_{self.entity_description.key}"
 
     async def async_press(self) -> None:
         """Identify the device by making it blink."""

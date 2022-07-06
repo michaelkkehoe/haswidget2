@@ -40,7 +40,7 @@ class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
 
     def __init__(
         self,
-        device: Swidgetevice,
+        device: SwidgetDevice,
         coordinator: SwidgetDataUpdateCoordinator,
     ) -> None:
         """Initialize the button entity."""
@@ -52,7 +52,7 @@ class SwidgetIdentifyButton(CoordinatedSwidgetEntity, ButtonEntity):
             entity_category=EntityCategory.CONFIG,
         )
         self._attr_name = "Blink"
-        self._attr_unique_id = f"{device}_{self.entity_description.key}"
+        self._attr_unique_id = f"{self.device}_{self.entity_description.key}"
 
     async def async_press(self) -> None:
         """Identify the device by making it blink."""

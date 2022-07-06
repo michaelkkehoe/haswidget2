@@ -5,6 +5,7 @@ from collections.abc import Sequence
 import logging
 from typing import Any, Final, cast
 
+from .swidgetclient.device import SwidgetDevice
 from .swidgetclient.swidgetdimmer import SwidgetDimmer
 import voluptuous as vol
 
@@ -51,7 +52,7 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
 
     def __init__(
         self,
-        device: SwidgetDimmer,
+        device: SwidgetDevice,
         coordinator: SwidgetDataUpdateCoordinator,
     ) -> None:
         """Initialize the switch."""

@@ -129,3 +129,4 @@ class SwidgetWebsocket:
     def close(self):
         """Close the listening websocket."""
         self.state = STATE_STOPPED
+        self.ws_client.close()

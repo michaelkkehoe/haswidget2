@@ -39,7 +39,7 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class SwidgetSensorEntityDescription(SensorEntityDescription):
-    """Describes TPLink sensor entity."""
+    """Describes A Swidget sensor entity."""
 
     emeter_attr: str | None = None
     precision: int | None = None

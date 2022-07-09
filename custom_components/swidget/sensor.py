@@ -94,6 +94,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         key="Air Quality",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="AQI",
         name="Air Quality",
         emeter_attr="iaq",
         precision=0,
@@ -194,7 +195,7 @@ class SwidgetSensor(CoordinatedSwidgetEntity, SensorEntity):
 
         Overridden to include the description.
         """
-        return f"{self.device.friendly_name} {self.entity_description.name}"
+        return f"{self.entity_description.name}"
 
     @property
     def native_value(self) -> float | None:

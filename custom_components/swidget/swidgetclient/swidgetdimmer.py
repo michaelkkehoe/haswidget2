@@ -44,7 +44,7 @@ class SwidgetDimmer(SwidgetDevice):
     def is_on(self) -> bool:
         """Return whether device is on."""
         test = self.assemblies['host'].components["0"].functions
-        log.info(f"MyDebug: {test}")
+        log.error(f"MyDebug: {test}")
         dimmer_state = self.assemblies['host'].components["0"].functions['toggle']["state"]
         if dimmer_state == "on":
             return True

@@ -29,9 +29,14 @@ _LOGGER = logging.getLogger(__name__)
 SERVICE_RANDOM_EFFECT = "random_effect"
 SERVICE_SEQUENCE_EFFECT = "sequence_effect"
 
-
+BRIGHTNESS = "brightness"
 VAL = vol.Range(min=0, max=100)
-
+SERVICE_SWIDGET_SET_DEFAULT_BRIGHTNESS = "set_default_brightness"
+SWIDGET_SET_STATE_SCHEMA = cv.make_entity_service_schema(
+    {
+        BRIGHTNESS: VAL
+    }
+)
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -43,7 +48,12 @@ async def async_setup_entry(
         async_add_entities(
             [SwidgetSmartDimmer(cast(SwidgetDimmer, coordinator.device), coordinator)]
         )
-
+    platform = entity_platform.async_get_current_platform()
+    platform.async_register_entity_service(
+        SERVICE_SWIDGET_SET_DEFAULT_BRIGHTNESS,
+        SWIDGET_SET_STATE_SCHEMA,
+        "set_default_brightness",
+    )
 
 class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
     """Representation of a TPLink Smart Bulb."""
@@ -100,3 +110,7 @@ class SwidgetSmartDimmer(CoordinatedSwidgetEntity, LightEntity):
     def brightness(self) -> int | None:
         """Return the brightness of this light between 0..255."""
         return round((self.device.brightness * 255.0) / 100.0)
+
+    async def set_default_brightness(self, **kwargs: Any) -> None:
+        if BRIGHTNESS in kwargs:
+            await self.device.set_default_brightness(kwargs[BRIGHTNESS])

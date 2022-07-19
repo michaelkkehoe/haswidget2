@@ -30,6 +30,11 @@ class SwidgetDimmer(SwidgetDevice):
             assembly="host", component="0", function="level", command={"now": brightness}
         )
 
+    async def set_default_brightness(self, brightness):
+        await self.send_command(
+            assembly="host", component="0", function="level", command={"default": brightness}
+        )
+
     @property  # type: ignore
     def is_dimmable(self) -> bool:
         """Whether the switch supports brightness changes."""

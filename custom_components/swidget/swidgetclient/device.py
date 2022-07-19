@@ -113,6 +113,10 @@ class SwidgetDevice:
         await self.get_summary()
         await self.get_state()
 
+    async def send_config(self, payload: dict):
+        data = json.dumps({"type":"config","request_id":"abcd", "payload": payload})
+        await self._websocket.send_str(data)
+
     async def send_command(
         self, assembly: str, component: str, function: str, command: dict
     ):

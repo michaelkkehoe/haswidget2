@@ -1,0 +1,15 @@
+set_default_brightness:
+  name: Set Default Brightness
+  description: Set a default brightness without changing the light level
+  target:
+    entity:
+      integration: swidget
+      domain: light
+  fields:
+    brightness:
+      name: brightness
+      description: The default light level when turned on
+      selector:
+        number:
+          min: 0
+          max: 100

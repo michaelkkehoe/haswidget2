@@ -80,7 +80,7 @@ class SwidgetWebsocket:
                         break
 
                     elif message.type == aiohttp.WSMsgType.ERROR:
-                        _LOGGER.error("AIOHTTP websocket error")
+                        _LOGGER.error(f"AIOHTTP websocket error. Message-type: {message.type} {message}")
                         break
 
         except aiohttp.ClientResponseError as error:

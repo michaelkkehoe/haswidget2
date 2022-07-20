@@ -106,6 +106,9 @@ class SwidgetDevice:
                     pass
         self._last_update = int(time.time())
         _LOGGER.error(f"Finished getting state: {self.__dict__}")
+        a = self.assemblies.__dict__
+        _LOGGER.error(f"Finished getting state: {self.__dict__}")
+        _LOGGER.error(f"Finished getting state: {a}")
 
     async def update(self):
         if self._last_update is None:
@@ -120,7 +123,7 @@ class SwidgetDevice:
     async def send_command(
         self, assembly: str, component: str, function: str, command: dict
     ):
-        """Send a command to the Swidget device either using a HTTP call or the existing ebsocket"""
+        """Send a command to the Swidget device either using a HTTP call or the existing websocket"""
         data = {assembly: {"components": {component: {function: command}}}}
 
         if self.use_websockets:

@@ -101,7 +101,7 @@ class SwidgetDevice:
                 _LOGGER.error(f"component.function: {component.functions}")
                 try:
                     _LOGGER.error(f"Setting State: {state[assembly]['components'][id]}")
-                    component.functions = state[assembly]["components"][id]
+                    component.functions.update(state[assembly]["components"][id])
                 except:
                     pass
         self._last_update = int(time.time())

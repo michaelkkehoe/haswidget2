@@ -45,6 +45,7 @@ class SwidgetDimmer(SwidgetDevice):
         """Return whether device is on."""
         test = self.assemblies['host'].components["0"].functions
         log.error(f"MyDebug: {test}")
+        # 2022-07-19 15:42:54 ERROR (MainThread) [custom_components.swidget.swidgetclient.swidgetdimmer] MyDebug: {'level': {'default': 10}}
         dimmer_state = self.assemblies['host'].components["0"].functions['toggle']["state"]
         if dimmer_state == "on":
             return True

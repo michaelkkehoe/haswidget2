@@ -118,6 +118,7 @@ class SwidgetWebsocket:
 
     async def send_str(self, message):
         _LOGGER.error(f"Sending Message: {message}")
+        message = str(message).encode('utf-8')
         await self.ws_client.send_str(f'{message}')
 
     async def listen(self):

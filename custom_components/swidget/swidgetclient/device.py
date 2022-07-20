@@ -106,9 +106,11 @@ class SwidgetDevice:
                     pass
         self._last_update = int(time.time())
         _LOGGER.error(f"Finished getting state: {self.__dict__}")
-        a = self.assemblies
+        a = self.assemblies['host']
+        b = self.assemblies['insert']
         _LOGGER.error(f"Finished getting state: {self.__dict__}")
         _LOGGER.error(f"Finished getting state: {a}")
+        _LOGGER.error(f"Finished getting state: {b}")
 
     async def update(self):
         if self._last_update is None:

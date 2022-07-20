@@ -106,7 +106,7 @@ class SwidgetDevice:
                     pass
         self._last_update = int(time.time())
         _LOGGER.error(f"Finished getting state: {self.__dict__}")
-        a = self.assemblies.__dict__
+        a = self.assemblies
         _LOGGER.error(f"Finished getting state: {self.__dict__}")
         _LOGGER.error(f"Finished getting state: {a}")
 

@@ -15,7 +15,7 @@ set_default_brightness:
           max: 100
 
 set_timer_countdown:
-  name:
+  name: Set a switch countdown timer
   description: Set a switch countdown timer
   target:
     entity:

@@ -266,7 +266,7 @@ class SwidgetDevice:
     @property
     def is_switch(self) -> bool:
         """Return True if the device is a switch"""
-        return self.device_type == "switch"
+        return self.device_type == "switch" or self.device_type == "pana_switch"
 
     @property
     def is_dimmer(self) -> bool:

@@ -18,6 +18,7 @@ class DeviceType(Enum):
     Dimmer = "dimmer"
     Outlet = "outlet"
     Switch = "switch"
+    TimerSwitch = "pana_switch"
     Unknown = -1
 
 

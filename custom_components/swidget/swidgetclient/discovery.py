@@ -11,6 +11,7 @@ from .device import DeviceType, SwidgetDevice
 from .swidgetdimmer import SwidgetDimmer
 from .swidgetoutlet import SwidgetOutlet
 from .swidgetswitch import SwidgetSwitch
+from .swidgettimerswitch import SwidgetTimerSwitch
 from .exceptions import SwidgetException
 
 RESPONSE_SEC = 5
@@ -83,4 +84,6 @@ def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
         return SwidgetSwitch
     elif device_type == "dimmer":
         return SwidgetDimmer
+    elif device_type == "pana_switch":
+        return Swit
     raise SwidgetException("Unknown device type: %s" % device_type)

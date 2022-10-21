@@ -32,7 +32,7 @@ SERVICE_SEQUENCE_EFFECT = "sequence_effect"
 BRIGHTNESS = "brightness"
 VAL = vol.Range(min=0, max=100)
 SERVICE_SWIDGET_SET_DEFAULT_BRIGHTNESS = "set_default_brightness"
-SWIDGET_SET_STATE_SCHEMA = cv.make_entity_service_schema(
+SWIDGET_SET_BRIGHTNESS_SCHEMA = cv.make_entity_service_schema(
     {
         BRIGHTNESS: VAL
     }
@@ -51,7 +51,7 @@ async def async_setup_entry(
     platform = entity_platform.async_get_current_platform()
     platform.async_register_entity_service(
         SERVICE_SWIDGET_SET_DEFAULT_BRIGHTNESS,
-        SWIDGET_SET_STATE_SCHEMA,
+        SWIDGET_SET_BRIGHTNESS_SCHEMA,
         "set_default_brightness",
     )
 

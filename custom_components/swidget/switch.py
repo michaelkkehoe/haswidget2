@@ -25,6 +25,15 @@ from .coordinator import SwidgetDataUpdateCoordinator
 from .entity import CoordinatedSwidgetEntity, async_refresh_after
 
 _LOGGER = logging.getLogger(__name__)
+DURATION = "duration"
+VAL = vol.Range(min=1, max=1440)
+SERVICE_SWIDGET_SET_COUNTDOWN_TIMER = "set_countdown_timer"
+SWIDGET_SET_COUNTDOWN_TIMER_SCHEMA = cv.make_entity_service_schema(
+    {
+        DURATION: VAL
+    }
+)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -43,6 +52,14 @@ async def async_setup_entry(
     if coordinator.device.insert_type == "USB":
         entities.append(SwidgetUSBSwitch(cast(SwidgetOutlet, coordinator.device), coordinator))
     async_add_entities(entities)
+
+    if coordinator.device.device_type == "pana_switch":
+        platform = entity_platform.async_get_current_platform()
+        platform.async_register_entity_service(
+            SERVICE_SWIDGET_SET_COUNTDOWN_TIMER,
+            SWIDGET_SET_COUNTDOWN_TIMER_SCHEMA,
+            "set_countdown_timer",
+        )
 
 
 class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
@@ -73,6 +90,11 @@ class SwidgetPlugSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     @property
     def is_on(self) -> bool:
         return self.device.is_on
+
+    async def set_countdown_timer(self, **kwargs: Any) -> None:
+        if DURATION in kwargs:
+            await self.device.set_countdown_timer(kwargs[DURATION])
+
 
 class SwidgetUSBSwitch(CoordinatedSwidgetEntity, SwitchEntity):
     """Representation of a swidget USB witch."""

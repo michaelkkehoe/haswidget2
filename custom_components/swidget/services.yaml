@@ -13,3 +13,19 @@ set_default_brightness:
         number:
           min: 0
           max: 100
+
+set_timer_countdown:
+  name:
+  description: Set a switch countdown timer
+  target:
+    entity:
+      integration: swidget
+      domain: switch
+  fields:
+    seconds:
+      name: minutes
+      description: The time that the switch will be on for.
+      selector:
+        number:
+          min: 1
+          max: 1440

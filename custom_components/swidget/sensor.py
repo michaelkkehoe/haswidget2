@@ -127,7 +127,7 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
     ),
     SwidgetSensorEntityDescription(
         key="Motion2",
-        device_class=BinarySensorDeviceClass.SAFETY,
+        device_class=BinarySensorDeviceClass.OCCUPANCY,
         state_class=SensorStateClass.MEASUREMENT,
         name="Motion2",
         emeter_attr="occupied",
@@ -152,8 +152,8 @@ def async_emeter_from_device(
             return None
         if attr == "occupied":
             if val is True:
-                return "on"
-            return "off"
+                return "detected"
+            return "cleared"
         return round(cast(float, val), description.precision)
 
 

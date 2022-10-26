@@ -126,6 +126,14 @@ SWIDGET_SENSORS: tuple[SwidgetSensorEntityDescription, ...] = (
         precision=0,
     ),
     SwidgetSensorEntityDescription(
+        key="Motion2",
+        device_class=BinarySensorDeviceClass.SAFETY,
+        state_class=SensorStateClass.MEASUREMENT,
+        name="Motion2",
+        emeter_attr="occupied",
+        precision=0,
+    ),
+    SwidgetSensorEntityDescription(
         key="Signal Strength",
         device_class=SensorDeviceClass.SIGNAL_STRENGTH,
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,

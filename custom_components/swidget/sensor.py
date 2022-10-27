@@ -164,8 +164,8 @@ def async_emeter_from_device(
             return None
         if attr == "occupied":
             if val is True:
-                return "on"
-            return "off"
+                return "is_motion"
+            return "is_no_motion"
         return round(cast(float, val), description.precision)
 
 

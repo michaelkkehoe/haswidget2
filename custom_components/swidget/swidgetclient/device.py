@@ -19,6 +19,7 @@ class DeviceType(Enum):
     Outlet = "outlet"
     Switch = "switch"
     TimerSwitch = "pana_switch"
+    RelaySwitch = "relay_switch"
     Unknown = -1
 
 

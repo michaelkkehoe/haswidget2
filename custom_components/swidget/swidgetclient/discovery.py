@@ -86,4 +86,6 @@ def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
         return SwidgetDimmer
     elif device_type == "pana_switch":
         return SwidgetTimerSwitch
+    elif device_type == "relay_switch":
+        return SwidgetSwitch
     raise SwidgetException("Unknown device type: %s" % device_type)

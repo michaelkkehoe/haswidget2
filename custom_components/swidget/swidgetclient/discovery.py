@@ -38,7 +38,7 @@ class SwidgetProtocol(ssdp.SimpleServiceDiscoveryProtocol):
             _LOGGER.error(headers["SERVER"])
             device_type = headers["SERVER"].split(" ")[1].split("+")[0]
             insert_type = headers["SERVER"].split(" ")[1].split("+")[1].split("/")[0]
-            friendly_name = f"Swidget {device_type} w/{insert_type} insert"
+            friendly_name = headers["SERVER"].split("/")[2].strip('"')
             devices[mac_address] = SwidgetDiscoveredDevice(mac_address, ip_address, friendly_name)
 
 async def discover_devices():

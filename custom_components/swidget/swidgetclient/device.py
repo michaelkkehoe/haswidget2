@@ -29,6 +29,7 @@ class SwidgetDevice:
         self.ssl = ssl
         self.secret_key = secret_key
         self.use_websockets = use_websockets
+        self._friendly_name = "Unknown Swidget Device"
         headers = {"x-secret-key": self.secret_key}
         connector = TCPConnector(force_close=True)
         self._session = ClientSession(headers=headers, connector=connector)
@@ -114,11 +115,25 @@ class SwidgetDevice:
         _LOGGER.error(f"Finished getting state: {a}")
         _LOGGER.error(f"Finished getting state: {b}")
 
+    async def get_friendly_name(self):
+        try:
+            async with self._session.get(
+                url=f"https://{self.ip_address}/api/v1/name", ssl=self.ssl
+            ) as response:
+                name = await response.json()
+        except Exception:
+            name = {"name": f"Swidget {self.device_type} w/{self.insert_type} insert"}
+        await self.process_friendly_name(name['name'])
+
+    async def process_friendly_name(self, name):
+        self._friendly_name = name
+
     async def update(self):
         if self._last_update is None:
             _LOGGER.debug("Performing the initial update to obtain sysinfo")
         await self.get_summary()
         await self.get_state()
+        await self.get_friendly_name()
 
     async def send_config(self, payload: dict):
         data = json.dumps({"type":"config","request_id":"abcd", "payload": payload})
@@ -268,16 +283,20 @@ class SwidgetDevice:
     def is_switch(self) -> bool:
         """Return True if the device is a switch"""
         return self.device_type == "switch" or self.device_type == "pana_switch" or self.device_type == "relay_switch"
+    @property
+    def is_pana_switch(self) -> bool:
+        """Return True if the device is a pana_switch"""
+        return self.device_type == "pana_switch"
 
     @property
     def is_dimmer(self) -> bool:
         """Return True if the device is a dimmer"""
         return self.device_type == "dimmer"
 
-    @property
+    @property  # type: ignore
     def friendly_name(self) -> str:
         """Return a friendly description of the device"""
-        return f"Swidget {self.device_type} w/{self.insert_type} insert"
+        return self._friendly_name
 
     def __repr__(self):
         if self._last_update is None:

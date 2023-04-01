@@ -62,7 +62,7 @@ class SwidgetWebsocket:
 
         try:
             headers = {'Connection': 'Upgrade'}
-            async with self.session.ws_connect(self.uri, headers=headers, verify_ssl=False) as self.ws_client:
+            async with self.session.ws_connect(self.uri, headers=headers, verify_ssl=False, heartbeat=30) as self.ws_client:
                 self.state = STATE_CONNECTED
                 self.failed_attempts = 0
                 self.send_str(json.dumps({"type": "summary", "request_id": "1"}))
@@ -85,10 +85,10 @@ class SwidgetWebsocket:
 
         except aiohttp.ClientResponseError as error:
             if error.code == 401:
-                _LOGGER.error("Credentials rejected: %s", error)
+                _LOGGER.error(f"Credentials rejected: {error}")
                 self._error_reason = ERROR_AUTH_FAILURE
             else:
-                _LOGGER.error("Unexpected response received: %s", error)
+                _LOGGER.error(f"Unexpected response received: {error}")
                 self._error_reason = ERROR_UNKNOWN
             self.state = STATE_STOPPED
         except (aiohttp.ClientConnectionError, asyncio.TimeoutError) as error:
@@ -98,16 +98,12 @@ class SwidgetWebsocket:
             elif self.state != STATE_STOPPED:
                 retry_delay = min(2 ** (self.failed_attempts - 1) * 30, 300)
                 self.failed_attempts += 1
-                _LOGGER.exception(
-                    "Websocket connection failed, retrying in %ds: %s",
-                    retry_delay,
-                    error,
-                )
+                _LOGGER.exception(f"Websocket connection failed, retrying in {retry_delay}s: {error}")
                 self.state = STATE_DISCONNECTED
                 await asyncio.sleep(retry_delay)
         except Exception as error:  # pylint: disable=broad-except
             if self.state != STATE_STOPPED:
-                _LOGGER.exception("Unexpected exception occurred: %s", error)
+                _LOGGER.exception(f"Unexpected exception occurred: {error}")
                 self._error_reason = ERROR_UNKNOWN
                 self.state = STATE_STOPPED
         else:

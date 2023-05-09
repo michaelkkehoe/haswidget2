@@ -89,7 +89,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # session = async_get_clientsession(hass)
     hass.data[DOMAIN][entry.entry_id] = SwidgetDataUpdateCoordinator(hass, device)
-    hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    # hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     hass.loop.create_task(device._websocket.listen())
     _LOGGER.error(" async_setup_entry returned")
     return True

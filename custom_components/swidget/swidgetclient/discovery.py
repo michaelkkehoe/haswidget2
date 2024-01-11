@@ -79,7 +79,7 @@ async def discover_single(host: str, password: str, ssl: bool) -> SwidgetDevice:
 
 def _get_device_class(device_type: str) -> Type[SwidgetDevice]:
     """Find SmartDevice subclass for device described by passed data."""
-    if device_type == "outlet":
+    if device_type == "outlet" or device_type == "outlet_20a":
         return SwidgetOutlet
     elif device_type == "switch":
         return SwidgetSwitch

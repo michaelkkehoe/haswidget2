@@ -29,7 +29,7 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Optional(CONF_HOST, default=""): str,
-        vol.Optional("password"): str,
+        vol.Optional("password", default=""): str,
     }
 )
 

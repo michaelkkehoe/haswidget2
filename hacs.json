@@ -1,6 +1,7 @@
 {
     "name": "Swidget",
     "domains": [
+      "camera",
       "switch",
       "light",
       "sensor",

@@ -303,10 +303,6 @@ class SwidgetDevice:
             return f"<{self.device_type} at {self.ip_address} - update() needed>"
         return f"<{self.device_type} model {self.model} at {self.ip_address}>"
 
-    def __del__(self):
-        if self.use_websockets:
-            self.stop()
-
 class SwidgetAssembly:
     def __init__(self, summary: dict):
         self.type = summary["type"]

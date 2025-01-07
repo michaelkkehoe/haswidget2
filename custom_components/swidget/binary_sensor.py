@@ -19,10 +19,8 @@ from homeassistant.const import (
     CONCENTRATION_PARTS_PER_BILLION,
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
-    POWER_WATT,
-    PRESSURE_HPA,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
-    TEMP_CELSIUS,
+
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
